@@ -36,10 +36,11 @@ A trilha:
 
 ### 🔍 Consultar — material de apoio
 Sem ordem, vá quando tiver dúvida:
-- **📋 Tabelas** — monte qualquer verbo regular + os 6 irregulares.
+- **🏋️ 100 exercícios** — banco de prática por tema (presente, indefinido, imperfeito, fechado×cenário, perfecto, subjuntivo, imperativo, mistos). Cada frase mostra a **explicação** depois que você responde.
+- **📖 25 verbos** — a conjugação dos 25 verbos mais usados nos tempos do app (presente, indefinido, imperfeito, subjuntivo) + particípio e imperativo.
+- **📋 Terminações** — monte qualquer verbo regular + os 6 irregulares.
 - **🌳 Que tempo usar?** — responda sim/não e descubra o tempo certo.
-- **🔗 Comparar c/ português** — o que é igual e o que te engana.
-- **🎯 Treino livre** — as 42 frases reais, embaralhadas.
+- **🔗 vs Português** — o que é igual e o que te engana.
 
 ---
 
