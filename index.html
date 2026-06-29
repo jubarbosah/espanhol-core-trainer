@@ -130,7 +130,8 @@
   <h2>Consultar</h2>
   <p class="sub">Apoio para usar quando quiser — sem ordem obrigatória.</p>
   <div class="subnav">
-    <button class="on" data-c="bank">🏋️ 100 exercícios</button>
+    <button class="on" data-c="bank">🏋️ 100 por tema</button>
+    <button data-c="rev">🔄 Revisão geral</button>
     <button data-c="verbos">📖 25 verbos</button>
     <button data-c="tabelas">📋 Terminações</button>
     <button data-c="arvore">🌳 Que tempo usar?</button>
@@ -143,6 +144,16 @@
       <p class="legend">Escolha um tema. Cada frase tem explicação após você responder.</p>
       <div id="bank-pills"></div>
       <div id="bank-host" style="margin-top:12px"></div>
+    </div>
+  </div>
+
+  <div class="csub" id="c-rev">
+    <div class="card">
+      <h3>Revisão geral — tudo misturado</h3>
+      <p class="legend">110 frases de todos os tempos e modos, em ordem aleatória. Ideal para revisar depois da trilha. Cada uma tem explicação 💡.</p>
+      <button class="btn" onclick="startRev(0)">▶️ Revisão completa (110)</button>
+      <button class="btn ghost" onclick="startRev(15)">⚡ Sessão rápida (15)</button>
+      <div id="rev-host" style="margin-top:12px"></div>
     </div>
   </div>
 
@@ -535,6 +546,120 @@ const BANK_TOPICS=[
  {k:"subj",label:"Subjuntivo"},{k:"imper",label:"Imperativo"},{k:"mix",label:"Mistos"}
 ];
 
+/* ===== 110 EXERCÍCIOS DE REVISÃO GERAL ===== */
+const REVISAO=[
+{cue:"ser · ella · presente",text:"Mi hermana ▢ médica en un hospital grande.",a:["es"],why:"Profissão/identidade no presente → ser: es."},
+{cue:"estar · yo · presente",text:"Hoy ▢ un poco cansado.",a:["estoy"],why:"Estado momentâneo → estar: estoy."},
+{cue:"tener · nosotros · presente",text:"Nosotros ▢ tres hijos.",a:["tenemos"],why:"Tener no presente, nós: tenemos."},
+{cue:"ir · tú · presente",text:"¿A dónde ▢ tan deprisa?",a:["vas"],why:"Ir no presente, tú: vas."},
+{cue:"hacer · ellos · presente",text:"Ellos ▢ yoga por las tardes.",a:["hacen"],why:"Hacer no presente, ellos: hacen."},
+{cue:"querer · yo · presente",text:"Yo ▢ un café con leche, por favor.",a:["quiero"],why:"Querer ditonga e→ie: quiero."},
+{cue:"poder · vosotros · presente",text:"¿▢ ayudarme con esto?",a:["podéis","podeis"],why:"Vosotros não ditonga: podéis."},
+{cue:"decir · nosotros · presente",text:"Siempre ▢ lo que pensamos.",a:["decimos"],why:"Decir, nós: decimos."},
+{cue:"saber · tú · presente",text:"¿▢ dónde está la estación?",a:["sabes"],why:"Saber, tú: sabes (irregular só no 'yo': sé)."},
+{cue:"ver · nosotros · presente",text:"Desde el balcón ▢ el mar.",a:["vemos"],why:"Ver, nós: vemos."},
+{cue:"dar · yo · presente",text:"Yo te ▢ mi número de teléfono.",a:["doy"],why:"Dar, 'yo' irregular: doy."},
+{cue:"venir · ellos · presente",text:"Mis primos ▢ a cenar esta noche.",a:["vienen"],why:"Venir ditonga e→ie: vienen."},
+{cue:"pensar · tú · presente",text:"¿Qué ▢ de la propuesta?",a:["piensas"],why:"Pensar ditonga e→ie: piensas."},
+{cue:"dormir · yo · presente",text:"Normalmente ▢ ocho horas.",a:["duermo"],why:"Dormir ditonga o→ue: duermo."},
+{cue:"seguir · él · presente",text:"Él ▢ estudiando medicina.",a:["sigue"],why:"Seguir e→i: sigue."},
+{cue:"hablar · yo · indefinido",text:"Anoche ▢ con mi jefe sobre el proyecto.",a:["hablé","hable"],why:"'Anoche' (fechado) → indefinido: hablé."},
+{cue:"comer · nosotros · indefinido",text:"Ayer ▢ en un restaurante italiano.",a:["comimos"],why:"Indefinido -ER: comimos."},
+{cue:"ir · yo · indefinido",text:"El lunes ▢ al dentista.",a:["fui"],why:"Ir/ser no indefinido: fui."},
+{cue:"tener · ella · indefinido",text:"La semana pasada ella ▢ gripe.",a:["tuvo"],why:"Tener: raiz 'tuv-' → tuvo."},
+{cue:"hacer · yo · indefinido",text:"Ayer ▢ todas las tareas de casa.",a:["hice"],why:"Hacer, yo: hice."},
+{cue:"estar · ellos · indefinido",text:"El año pasado ▢ en Argentina.",a:["estuvieron"],why:"Estar: raiz 'estuv-' → estuvieron."},
+{cue:"poder · tú · indefinido",text:"¿Al final ▢ entrar al concierto?",a:["pudiste"],why:"Poder: raiz 'pud-' → pudiste."},
+{cue:"decir · él · indefinido",text:"El profesor nos ▢ que había examen.",a:["dijo"],why:"Decir: raiz 'dij-' → dijo."},
+{cue:"poner · yo · indefinido",text:"Anteayer ▢ el dinero en el banco.",a:["puse"],why:"Poner: raiz 'pus-' → puse."},
+{cue:"ver · ellos · indefinido",text:"Anoche ▢ el partido en el bar.",a:["vieron"],why:"Ver: vieron."},
+{cue:"dar · nosotros · indefinido",text:"Le ▢ las gracias por la ayuda.",a:["dimos"],why:"Dar no indefinido: dimos."},
+{cue:"venir · tú · indefinido",text:"¿Por qué no ▢ ayer a la fiesta?",a:["viniste"],why:"Venir: raiz 'vin-' → viniste."},
+{cue:"leer · él · indefinido",text:"Él ▢ el libro en una semana.",a:["leyó","leyo"],why:"Leer: 'i' vira 'y' entre vogais → leyó."},
+{cue:"pedir · yo · indefinido",text:"En el bar ▢ una tortilla.",a:["pedí","pedi"],why:"Pedir, yo: pedí."},
+{cue:"llegar · nosotros · indefinido",text:"Anoche ▢ muy tarde a casa.",a:["llegamos"],why:"Llegar, nós (passado pelo contexto): llegamos."},
+{cue:"ser · yo · imperfeito",text:"De niño ▢ muy tímido.",a:["era"],why:"Ser é irregular no imperfeito: era."},
+{cue:"ir · ella · imperfeito",text:"Antes ella ▢ al gimnasio cada día.",a:["iba"],why:"Ir é irregular no imperfeito: iba."},
+{cue:"ver · nosotros · imperfeito",text:"De pequeños ▢ dibujos por la mañana.",a:["veíamos","veiamos"],why:"Hábito passado → imperfeito: veíamos."},
+{cue:"tener · ellos · imperfeito",text:"Cuando ▢ dinero, viajaban mucho.",a:["tenían","tenian"],why:"Cenário/condição no passado → imperfeito: tenían."},
+{cue:"vivir · yo · imperfeito",text:"Antes ▢ en un pueblo pequeño.",a:["vivía","vivia"],why:"Situação contínua no passado → imperfeito: vivía."},
+{cue:"hacer · tú · imperfeito",text:"De joven, ¿qué deporte ▢?",a:["hacías","hacias"],why:"Hábito passado → imperfeito: hacías."},
+{cue:"estar · ello · imperfeito",text:"El cielo ▢ despejado aquella mañana.",a:["estaba"],why:"Descrição → imperfeito: estaba."},
+{cue:"hablar · nosotros · imperfeito",text:"En casa ▢ siempre en gallego.",a:["hablábamos","hablabamos"],why:"Hábito → imperfeito: hablábamos."},
+{cue:"jugar · yo · imperfeito",text:"De niño ▢ al fútbol cada tarde.",a:["jugaba"],why:"Hábito → imperfeito: jugaba."},
+{cue:"querer · ella · imperfeito",text:"Ella ▢ mucho a su abuela.",a:["quería","queria"],why:"Sentimento contínuo no passado → imperfeito: quería."},
+{cue:"estudiar · yo · imperfeito (fundo)",text:"Mientras ▢, mi hermano veía la tele.",a:["estudiaba"],why:"'Mientras' + ação de fundo → imperfeito: estudiaba."},
+{cue:"dormir · yo · imperfeito (fundo)",text:"Cuando sonó el teléfono, yo ▢.",a:["dormía","dormia"],why:"Ação em curso interrompida → imperfeito: dormía."},
+{cue:"conocer · nosotros · indefinido",text:"Ayer ▢ a los vecinos nuevos.",a:["conocimos"],why:"No indefinido, conocer = 'conhecemos pela 1ª vez': conocimos."},
+{cue:"conocer · yo · imperfeito",text:"Antes no ▢ esta ciudad.",a:["conocía","conocia"],why:"No imperfeito, conocer = 'já conhecia/conhecia': conocía."},
+{cue:"ir · nosotros · indefinido",text:"El verano pasado ▢ a Italia.",a:["fuimos"],why:"'El verano pasado' (fechado) → indefinido: fuimos."},
+{cue:"ser · yo · imperfeito",text:"Cuando ▢ estudiante, no tenía dinero.",a:["era"],why:"Cenário no passado → imperfeito: era."},
+{cue:"gritar · ele · indefinido",text:"De repente alguien ▢.",a:["gritó","grito"],why:"'De repente' = ação pontual → indefinido: gritó."},
+{cue:"estar · ella · imperfeito",text:"La fiesta ▢ muy animada.",a:["estaba"],why:"Descrição de ambiente → imperfeito: estaba."},
+{cue:"terminar · yo · indefinido",text:"Esta vez sí ▢ a tiempo.",a:["terminé","termine"],why:"Ação concluída pontual → indefinido: terminé."},
+{cue:"nevar · ele · imperfeito",text:"Todos los inviernos ▢ en el pueblo.",a:["nevaba"],why:"Hábito/repetição → imperfeito: nevaba."},
+{cue:"levantarse · yo · Perfecto",text:"Hoy ▢ muy temprano.",a:["me he levantado"],why:"'Hoy' (aberto) → Perfecto reflexivo: me he levantado."},
+{cue:"comer · tú · Perfecto",text:"¿Ya ▢?",a:["has comido"],why:"'Ya' (recente) → Perfecto: has comido."},
+{cue:"viajar · nosotros · Perfecto",text:"Este año ▢ tres veces.",a:["hemos viajado"],why:"'Este año' (aberto) → Perfecto: hemos viajado."},
+{cue:"llegar · ellos · Perfecto",text:"Todavía no ▢.",a:["han llegado"],why:"'Todavía no' → Perfecto: han llegado."},
+{cue:"romper · yo · Perfecto",text:"Esta mañana ▢ un vaso.",a:["he roto"],why:"'Esta mañana' (aberto) → Perfecto. Particípio irregular: roto."},
+{cue:"ver · vosotros · Perfecto",text:"¿Alguna vez ▢ un flamenco en vivo?",a:["habéis visto","habeis visto"],why:"'Alguna vez' (experiência) → Perfecto. Particípio: visto."},
+{cue:"hacer · ella · Perfecto",text:"Este mes ella ▢ mucho deporte.",a:["ha hecho"],why:"'Este mes' (aberto) → Perfecto. Particípio: hecho."},
+{cue:"dormir · yo · Perfecto",text:"Últimamente ▢ mal.",a:["he dormido"],why:"'Últimamente' (aberto) → Perfecto: he dormido."},
+{cue:"decir · ellos · Perfecto",text:"Hoy nos ▢ la verdad.",a:["han dicho"],why:"'Hoy' (aberto) → Perfecto. Particípio: dicho."},
+{cue:"volver · tú · Perfecto",text:"Aún no ▢ a casa, ¿verdad?",a:["has vuelto"],why:"'Aún no' → Perfecto. Particípio: vuelto."},
+{cue:"tener · tú · subjuntivo",text:"Espero que ▢ un buen viaje.",a:["tengas"],why:"'Espero que' → subjuntivo. Raiz 'teng-': tengas."},
+{cue:"venir · vosotros · subjuntivo",text:"Quiero que ▢ temprano.",a:["vengáis","vengais"],why:"'Quiero que' → subjuntivo. Raiz 'veng-': vengáis."},
+{cue:"descansar · nosotros · subjuntivo",text:"Es importante que ▢ bien.",a:["descansemos"],why:"'Es importante que' → subjuntivo: descansemos."},
+{cue:"ser · él · subjuntivo",text:"No creo que ▢ tan tarde.",a:["sea"],why:"'No creo que' (dúvida) → subjuntivo: sea."},
+{cue:"hacer · ele · subjuntivo",text:"Ojalá ▢ buen tiempo mañana.",a:["haga"],why:"'Ojalá' → subjuntivo. Raiz 'hag-': haga."},
+{cue:"irse · tú · subjuntivo",text:"Antes de que ▢, firma aquí.",a:["te vayas"],why:"'Antes de que' → subjuntivo. Reflexivo de ir: te vayas."},
+{cue:"saber · ellos · subjuntivo",text:"Dudo que ▢ la dirección.",a:["sepan"],why:"'Dudo que' → subjuntivo. Raiz 'sep-': sepan."},
+{cue:"estar · vosotros · subjuntivo",text:"Me alegra que ▢ bien.",a:["estéis","esteis"],why:"'Me alegra que' (emoção) → subjuntivo: estéis."},
+{cue:"llegar · yo · subjuntivo",text:"Cuando ▢ a casa, te llamo.",a:["llegue"],why:"'Cuando' apontando p/ futuro → subjuntivo: llegue."},
+{cue:"poner · tú · subjuntivo",text:"Es necesario que ▢ atención.",a:["pongas"],why:"'Es necesario que' → subjuntivo. Raiz 'pong-': pongas."},
+{cue:"decir · tú · subjuntivo",text:"Te pido que no ▢ nada.",a:["digas"],why:"'Te pido que' (pedido) → subjuntivo: digas."},
+{cue:"poder · nosotros · subjuntivo",text:"Espero que ▢ terminar hoy.",a:["podamos"],why:"'Espero que' → subjuntivo: podamos."},
+{cue:"llover · ele · presente (PEGADINHA)",text:"A lo mejor ▢ esta tarde.",a:["llueve"],why:"'A lo mejor' usa INDICATIVO: llueve (não 'llueva')."},
+{cue:"poder · tú · subjuntivo",text:"Es una pena que no ▢ venir.",a:["puedas"],why:"'Es una pena que' (emoção) → subjuntivo: puedas."},
+{cue:"llamar · ellos · subjuntivo",text:"Quiero que me ▢ mañana.",a:["llamen"],why:"'Quiero que' → subjuntivo: llamen."},
+{cue:"venir · tú · ordem",text:"¡▢ conmigo!",a:["ven"],why:"Imperativo irregular de tú: ven."},
+{cue:"hacer · vosotros · ordem",text:"¡▢ silencio!",a:["haced"],why:"Ordem vosotros: hacer − r + d → haced."},
+{cue:"ser · tú · ordem",text:"¡▢ puntual mañana!",a:["sé","se"],why:"Imperativo irregular de tú: sé."},
+{cue:"decir · vosotros · ordem",text:"¡▢ la verdad!",a:["decid"],why:"Ordem vosotros: decir − r + d → decid."},
+{cue:"correr · tú · ordem negativa",text:"¡No ▢ por el pasillo!",a:["corras"],why:"Ordem negativa → subjuntivo: no corras."},
+{cue:"tener · tú · ordem",text:"¡▢ cuidado con el escalón!",a:["ten"],why:"Imperativo irregular de tú: ten."},
+{cue:"llegar · vosotros · ordem negativa",text:"¡No ▢ tarde!",a:["lleguéis","llegueis"],why:"Ordem negativa → subjuntivo: no lleguéis."},
+{cue:"poner · vosotros · ordem",text:"¡▢ la mesa, por favor!",a:["poned"],why:"Ordem vosotros: poner − r + d → poned."},
+{cue:"ir · tú · ordem",text:"¡▢ a comprar pan!",a:["ve"],why:"Imperativo irregular de tú: ve."},
+{cue:"mentir · tú · ordem negativa",text:"¡No me ▢!",a:["mientas"],why:"Negativo → subjuntivo. Mentir ditonga e→ie: mientas."},
+{cue:"llamarse · yo · presente",text:"Yo ▢ Carlos.",a:["me llamo"],why:"Verbo reflexivo no presente: me llamo."},
+{cue:"llamarse · tú · presente",text:"¿Cómo ▢?",a:["te llamas"],why:"Reflexivo: te llamas."},
+{cue:"levantarse · ellos · presente",text:"Ellos ▢ a las siete.",a:["se levantan"],why:"Reflexivo: se levantan."},
+{cue:"acostarse · yo · indefinido",text:"Ayer ▢ muy tarde.",a:["me acosté","me acoste"],why:"Reflexivo no indefinido (sem ditongo no passado): me acosté."},
+{cue:"bañarse · yo · imperfeito",text:"De niño ▢ en el río.",a:["me bañaba"],why:"Hábito passado, reflexivo → imperfeito: me bañaba."},
+{cue:"terminar · yo · subjuntivo",text:"Mañana, cuando ▢, te aviso.",a:["termine"],why:"'Cuando' p/ futuro → subjuntivo: termine."},
+{cue:"perder · yo · indefinido",text:"El otro día ▢ las llaves.",a:["perdí","perdi"],why:"Ação pontual → indefinido: perdí."},
+{cue:"poder · nosotros · presente (hábito)",text:"Siempre que ▢, ayudamos.",a:["podemos"],why:"'Siempre que' (hábito) → indicativo: podemos."},
+{cue:"contestar · él · subjuntivo",text:"Es raro que él no ▢ el teléfono.",a:["conteste"],why:"'Es raro que' (juízo) → subjuntivo: conteste."},
+{cue:"querer · yo · imperfeito",text:"Cuando era pequeña, ▢ ser cantante.",a:["quería","queria"],why:"Desejo no passado-cenário → imperfeito: quería."},
+{cue:"trabajar · nosotros · Perfecto",text:"Esta semana ▢ mucho.",a:["hemos trabajado"],why:"'Esta semana' (aberto) → Perfecto: hemos trabajado."},
+{cue:"oír · yo · indefinido",text:"Anoche no ▢ el despertador.",a:["oí","oi"],why:"Ação pontual → indefinido: oí."},
+{cue:"salir · ele · subjuntivo",text:"Ojalá todo ▢ bien.",a:["salga"],why:"'Ojalá' → subjuntivo. Raiz 'salg-': salga."},
+{cue:"poder · tú · presente (cortesia)",text:"¿▢ pasarme la sal?",a:["puedes"],why:"Pedido educado no presente: puedes."},
+{cue:"haber · ele · imperfeito",text:"Antes ▢ menos coches en la ciudad.",a:["había","habia"],why:"Descrição do passado → imperfeito: había."},
+{cue:"viajar · nosotros · subjuntivo",text:"El año que viene quiero que ▢ juntos.",a:["viajemos"],why:"'Quiero que' → subjuntivo: viajemos."},
+{cue:"echarse · ele · indefinido",text:"De repente, el niño ▢ a llorar.",a:["se echó","se echo"],why:"'De repente' = pontual → indefinido reflexivo: se echó."},
+{cue:"vestirse · ella · presente",text:"Cada mañana ella ▢ rápido.",a:["se viste"],why:"Reflexivo, e→i: se viste."},
+{cue:"haber · ele · indefinido",text:"Ayer ▢ un accidente en la autopista.",a:["hubo"],why:"Evento pontual → indefinido: hubo (não 'había')."},
+{cue:"sentirse · tú · subjuntivo",text:"Espero que pronto ▢ mejor.",a:["te sientas"],why:"'Espero que' → subjuntivo. Sentirse e→ie: te sientas."},
+{cue:"llamar · ellos · indefinido",text:"Cuando ▢, no estaba en casa.",a:["llamaron"],why:"Ação pontual no passado → indefinido: llamaron."},
+{cue:"decir · yo · subjuntivo",text:"No es verdad que yo ▢ eso.",a:["diga"],why:"'No es verdad que' → subjuntivo: diga."},
+{cue:"esperar · nosotros · imperfeito",text:"Mientras ▢, tomamos un café.",a:["esperábamos","esperabamos"],why:"'Mientras' + fundo → imperfeito: esperábamos."},
+{cue:"quedarse · yo · Perfecto",text:"Este finde ▢ en casa.",a:["me he quedado"],why:"'Este finde' (aberto) → Perfecto reflexivo: me he quedado."},
+{cue:"disfrutar · vosotros · ordem",text:"¡▢ de las vacaciones!",a:["disfrutad"],why:"Ordem vosotros: disfrutar − r + d → disfrutad."}
+];
+
 /* ===== HELPERS ===== */
 const NORM=s=>s.toLowerCase().trim().replace(/\s+/g," ");
 const STRIP=s=>NORM(s).normalize("NFD").replace(/[̀-ͯ]/g,"");
@@ -659,6 +784,18 @@ function startBank(k){
   });
 }
 window.startBank=startBank;
+
+/* ===== REVISÃO GERAL ===== */
+const revHost=document.getElementById("rev-host");
+function startRev(n){
+  let list=shuffle(REVISAO);
+  if(n>0)list=list.slice(0,n);
+  runSession(list,revHost,()=>{
+    revHost.innerHTML=`<div class="done-screen"><div class="big">🏁</div><h3>Revisão concluída!</h3>
+      <button class="btn" onclick="startRev(${n})">Nova rodada</button></div>`;
+  });
+}
+window.startRev=startRev;
 
 /* ===== 25 VERBOS ===== */
 const v25sel=document.getElementById("v25-sel"),v25out=document.getElementById("v25-out");
