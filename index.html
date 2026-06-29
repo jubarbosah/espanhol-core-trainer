@@ -3,642 +3,641 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Spanish Core 80/20 — Engenharia Verbal</title>
+<title>Espanhol Passo a Passo</title>
 <style>
   :root{
     --bg:#0f172a; --panel:#1e293b; --panel2:#273449; --ink:#e2e8f0; --muted:#94a3b8;
     --accent:#38bdf8; --accent2:#818cf8; --ok:#34d399; --bad:#f87171; --warn:#fbbf24;
-    --line:#334155; --stem:#fcd34d; --end:#5eead4;
+    --line:#334155; --lock:#475569;
   }
   *{box-sizing:border-box}
   body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
-    background:linear-gradient(160deg,#0b1220,#0f172a);color:var(--ink);line-height:1.55}
-  header{padding:22px 20px 14px;border-bottom:1px solid var(--line);
-    background:linear-gradient(120deg,#1e293b,#1b2540)}
-  header h1{margin:0;font-size:21px;letter-spacing:.3px}
-  header p{margin:4px 0 0;color:var(--muted);font-size:13px}
-  nav{display:flex;gap:6px;flex-wrap:wrap;padding:12px 16px;background:#0c1424;
-    border-bottom:1px solid var(--line);position:sticky;top:0;z-index:10}
-  nav button{background:transparent;border:1px solid var(--line);color:var(--muted);
-    padding:9px 14px;border-radius:10px;cursor:pointer;font-size:14px;font-weight:600;transition:.15s}
-  nav button:hover{color:var(--ink);border-color:var(--accent)}
+    background:linear-gradient(160deg,#0b1220,#0f172a);color:var(--ink);line-height:1.6}
+  header{padding:18px 18px 12px;border-bottom:1px solid var(--line);background:#16213a}
+  header h1{margin:0;font-size:19px}
+  header p{margin:3px 0 0;color:var(--muted);font-size:13px}
+  nav{display:flex;gap:8px;padding:10px 14px;background:#0c1424;border-bottom:1px solid var(--line);
+    position:sticky;top:0;z-index:10}
+  nav button{flex:1;background:transparent;border:1px solid var(--line);color:var(--muted);
+    padding:11px;border-radius:10px;cursor:pointer;font-size:15px;font-weight:700}
   nav button.active{background:var(--accent);color:#06283b;border-color:var(--accent)}
-  main{max-width:920px;margin:0 auto;padding:24px 18px 80px}
-  .view{display:none} .view.active{display:block;animation:fade .25s}
-  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
-  h2{font-size:19px;margin:0 0 4px} .sub{color:var(--muted);font-size:14px;margin:0 0 18px}
-  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px;margin:14px 0}
+  main{max-width:720px;margin:0 auto;padding:20px 16px 90px}
+  .view{display:none} .view.active{display:block;animation:fade .2s}
+  @keyframes fade{from{opacity:0}to{opacity:1}}
+  h2{font-size:20px;margin:0 0 4px} .sub{color:var(--muted);font-size:14px;margin:0 0 16px}
+
+  /* progress bar */
+  .topbar{display:flex;align-items:center;gap:10px;margin-bottom:18px}
+  .topbar .bar{flex:1;height:10px;background:#0c1424;border:1px solid var(--line);border-radius:999px;overflow:hidden}
+  .topbar .bar>div{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));width:0;transition:.4s}
+  .topbar .pct{font-size:13px;color:var(--muted);min-width:42px;text-align:right}
+
+  /* lesson list */
+  .lesson{display:flex;align-items:center;gap:14px;background:var(--panel);border:1px solid var(--line);
+    border-radius:14px;padding:14px 16px;margin:10px 0;cursor:pointer;transition:.15s}
+  .lesson:hover{border-color:var(--accent)}
+  .lesson.locked{opacity:.5;cursor:not-allowed}
+  .lesson.locked:hover{border-color:var(--line)}
+  .lesson .num{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+    font-weight:800;font-size:15px;flex-shrink:0;background:var(--panel2);border:2px solid var(--line);color:var(--muted)}
+  .lesson.done .num{background:var(--ok);border-color:var(--ok);color:#06283b}
+  .lesson.avail .num{background:var(--accent);border-color:var(--accent);color:#06283b}
+  .lesson .t{font-weight:700;font-size:15.5px}
+  .lesson .s{font-size:12.5px;color:var(--muted)}
+
+  /* lesson screen */
+  .back{background:none;border:none;color:var(--accent);font-size:14px;cursor:pointer;padding:0;margin-bottom:10px}
+  .crumb{font-size:12.5px;color:var(--muted);margin-bottom:6px}
+  .teach{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:20px;margin-bottom:16px}
+  .teach h3{margin:0 0 10px;font-size:18px;color:var(--accent)}
+  .teach p{margin:0 0 12px;font-size:15.5px}
+  .teach b{color:#fff}
+  .ex-box{background:#0c1424;border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin:10px 0;font-size:15px}
+  .ex-box .hl{color:var(--accent2);font-weight:700}
+  .warnbox{background:#2a2210;border-left:3px solid var(--warn);padding:10px 14px;border-radius:8px;margin:10px 0;font-size:14px}
+  .warnbox b{color:var(--warn)}
+  table{width:100%;border-collapse:collapse;margin:8px 0;font-size:14px}
+  th,td{border:1px solid var(--line);padding:7px 9px;text-align:left}
+  th{background:var(--panel2);color:var(--accent)}
+  .end{color:#5eead4;font-weight:700}
+  .stem{color:#fcd34d;font-weight:700}
+
+  /* drill */
+  .drill{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:20px}
+  .drill .count{font-size:12.5px;color:var(--muted);margin-bottom:10px}
+  .drill .cue{display:inline-block;background:var(--panel2);border:1px solid var(--line);border-radius:8px;
+    padding:5px 11px;font-size:13px;color:var(--accent2);margin-bottom:12px;font-weight:600}
+  .drill .text{font-size:17px;margin-bottom:16px}
+  .drill .text .blank{color:var(--accent);font-weight:700;border-bottom:2px solid var(--accent);padding:0 18px}
+  .drill input{width:100%;background:#0c1424;border:2px solid var(--line);color:var(--ink);
+    padding:13px;border-radius:10px;font-size:17px;text-align:center}
+  .drill input:focus{outline:none;border-color:var(--accent)}
+  .btn{display:block;width:100%;background:var(--accent);color:#06283b;border:none;padding:14px;
+    border-radius:12px;font-weight:800;font-size:16px;cursor:pointer;margin-top:14px}
+  .btn:hover{filter:brightness(1.07)}
+  .btn.ghost{background:transparent;border:1px solid var(--line);color:var(--ink)}
+  .fb{margin-top:14px;padding:14px;border-radius:12px;font-size:14.5px;display:none}
+  .fb.ok{background:#10241c;border:1px solid var(--ok);display:block}
+  .fb.bad{background:#2a1418;border:1px solid var(--bad);display:block}
+  .fb .ans{font-size:17px;font-weight:800;margin-bottom:4px}
+  .fb .why{color:var(--ink);margin-top:6px}
+  .done-screen{text-align:center;padding:30px 10px}
+  .done-screen .big{font-size:48px}
+  .done-screen h3{color:var(--ok);font-size:22px;margin:10px 0}
+
+  /* consultar */
+  .subnav{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px}
+  .subnav button{background:var(--panel2);border:1px solid var(--line);color:var(--muted);
+    padding:8px 13px;border-radius:9px;cursor:pointer;font-size:13.5px;font-weight:600}
+  .subnav button.on{background:var(--accent);color:#06283b;border-color:var(--accent)}
+  .csub{display:none}.csub.on{display:block}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px;margin:12px 0}
   .card h3{margin:0 0 8px;font-size:16px;color:var(--accent)}
-  .insight{background:#15243a;border-left:3px solid var(--accent2);padding:10px 14px;border-radius:8px;
-    margin:10px 0;font-size:14px}
+  .insight{background:#15243a;border-left:3px solid var(--accent2);padding:9px 13px;border-radius:8px;margin:8px 0;font-size:14px}
   .insight b{color:var(--accent2)}
+  select{background:#0c1424;border:1px solid var(--line);color:var(--ink);padding:9px;border-radius:9px;font-size:14px}
   .pill{display:inline-block;background:var(--panel2);border:1px solid var(--line);border-radius:999px;
-    padding:4px 11px;font-size:12px;margin:3px 4px 3px 0;cursor:pointer;color:var(--muted)}
-  .pill:hover{border-color:var(--accent);color:var(--ink)}
+    padding:5px 12px;font-size:13px;margin:3px 4px 3px 0;cursor:pointer;color:var(--muted)}
   .pill.on{background:var(--accent);color:#06283b;border-color:var(--accent)}
-  table{width:100%;border-collapse:collapse;margin:8px 0;font-size:13.5px}
-  th,td{border:1px solid var(--line);padding:8px 10px;text-align:left}
-  th{background:var(--panel2);color:var(--accent);font-weight:700}
-  td .stem{color:var(--stem);font-weight:700}
-  td .end{color:var(--end);font-weight:700}
-  .legend{font-size:12px;color:var(--muted);margin:6px 0}
-  .legend .stem{color:var(--stem)} .legend .end{color:var(--end)}
-  select,input[type=text]{background:#0c1424;border:1px solid var(--line);color:var(--ink);
-    padding:9px 11px;border-radius:9px;font-size:14px}
-  input[type=text]{width:200px}
-  button.act{background:var(--accent);color:#06283b;border:none;padding:10px 16px;border-radius:9px;
-    font-weight:700;cursor:pointer;font-size:14px}
-  button.act:hover{filter:brightness(1.08)}
-  button.ghost{background:transparent;border:1px solid var(--line);color:var(--ink);padding:9px 14px;
-    border-radius:9px;cursor:pointer;font-size:14px}
-  button.ghost:hover{border-color:var(--accent)}
-  .builder-out{margin-top:14px;background:#0c1424;border:1px solid var(--line);border-radius:10px;padding:16px}
-  .formrow{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px dashed #24344d;font-size:15px}
-  .formrow:last-child{border:none}
-  .formrow .who{color:var(--muted);font-size:13px}
-  .big{font-size:18px}
-  /* decision tree */
-  .tree-q{font-size:17px;font-weight:700;margin-bottom:12px}
+  .formrow{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px dashed #24344d;font-size:15px}
+  .formrow:last-child{border:none}.formrow .who{color:var(--muted);font-size:13px}
   .tree-opt{display:block;width:100%;text-align:left;background:var(--panel2);border:1px solid var(--line);
-    color:var(--ink);padding:13px 15px;border-radius:10px;margin:8px 0;cursor:pointer;font-size:14.5px;transition:.15s}
-  .tree-opt:hover{border-color:var(--accent);background:#2b3a52}
-  .tree-result{background:#10241c;border:1px solid var(--ok);border-radius:12px;padding:18px;margin-top:6px}
-  .tree-result h3{color:var(--ok);margin:0 0 8px}
-  .crumbs{font-size:12.5px;color:var(--muted);margin-bottom:14px;min-height:18px}
-  .crumbs span{color:var(--accent)}
-  .trap{background:#2a1c10;border-left:3px solid var(--warn);padding:10px 14px;border-radius:8px;margin:10px 0;font-size:13.5px}
-  .trap b{color:var(--warn)}
-  /* practice */
-  .prog{height:8px;background:#0c1424;border:1px solid var(--line);border-radius:999px;overflow:hidden;margin:6px 0 16px}
-  .prog > div{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));width:0;transition:.3s}
-  .ex-cue{color:var(--muted);font-size:13px;margin-bottom:6px}
-  .ex-cue b{color:var(--accent2)}
-  .ex-sentence{font-size:16px;margin:8px 0 14px}
-  .ex-sentence .blank{display:inline-block;min-width:90px;border-bottom:2px solid var(--accent);
-    color:var(--accent);font-weight:700;text-align:center;padding:0 6px}
-  .feedback{margin-top:14px;padding:14px;border-radius:10px;font-size:14px;display:none}
-  .feedback.ok{background:#10241c;border:1px solid var(--ok);display:block}
-  .feedback.bad{background:#2a1418;border:1px solid var(--bad);display:block}
-  .feedback.warn{background:#2a2210;border:1px solid var(--warn);display:block}
-  .feedback .ans{font-size:16px;font-weight:700}
-  .feedback .why{margin-top:8px;color:var(--ink)}
-  .feedback .rule{margin-top:8px;font-size:12.5px;color:var(--muted)}
-  .stats{display:flex;gap:18px;font-size:13px;color:var(--muted);margin-bottom:6px}
-  .stats b{color:var(--ink)}
-  .modechip{font-size:12px;color:var(--muted);margin:0 0 12px}
-  .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
-  .choice{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
-  .choice button{flex:1;min-width:130px;background:var(--panel2);border:1px solid var(--line);color:var(--ink);
-    padding:11px;border-radius:9px;cursor:pointer;font-size:13.5px}
-  .choice button:hover{border-color:var(--accent)}
-  .choice button.sel{background:var(--accent);color:#06283b;border-color:var(--accent)}
-  .choice button.correct{background:#10241c;border-color:var(--ok);color:var(--ok)}
-  .choice button.wrong{background:#2a1418;border-color:var(--bad);color:var(--bad)}
-  .step-label{font-size:12px;text-transform:uppercase;letter-spacing:1px;color:var(--accent2);margin:14px 0 4px;font-weight:700}
-  footer{text-align:center;color:#475569;font-size:12px;padding:20px}
-  a{color:var(--accent)}
+    color:var(--ink);padding:12px 14px;border-radius:10px;margin:7px 0;cursor:pointer;font-size:14px}
+  .tree-opt:hover{border-color:var(--accent)}
+  .tree-res{background:#10241c;border:1px solid var(--ok);border-radius:12px;padding:16px;margin-top:6px}
+  .tree-res h4{color:var(--ok);margin:0 0 6px}
+  .legend{font-size:12.5px;color:var(--muted);margin:6px 0}
+  footer{text-align:center;color:#475569;font-size:12px;padding:18px}
 </style>
 </head>
 <body>
 <header>
-  <h1>🛠️ Spanish Core 80/20 · Engenharia Verbal</h1>
-  <p>Entenda o mecanismo. ~85% da fala usa 6 estruturas — domine o sistema, não as tabelas.</p>
+  <h1>🇪🇸 Espanhol Passo a Passo</h1>
+  <p>Uma lição por vez. Aprende um pedacinho, pratica, avança.</p>
 </header>
 <nav>
-  <button class="active" data-v="motor">⚙️ O Motor das Formas</button>
-  <button data-v="logica">🌳 A Lógica dos Tempos</button>
-  <button data-v="correl">🔗 Correlações</button>
-  <button data-v="pratica">🎯 Prática com Raciocínio</button>
+  <button class="active" data-v="aprender">📚 Aprender</button>
+  <button data-v="consultar">🔍 Consultar</button>
 </nav>
 <main>
 
-<!-- ===================== VIEW 1: MOTOR ===================== -->
-<section class="view active" id="motor">
-  <h2>O Motor das Formas</h2>
-  <p class="sub">Todo verbo = <span style="color:var(--stem)">raiz</span> + <span style="color:var(--end)">desinência</span>. A raiz vem do infinitivo (habl<i>ar</i> → habl-). A desinência carrega tempo + pessoa. Aprenda as desinências e você gera tudo.</p>
-
-  <div class="card">
-    <h3>1. As 3 simetrias que eliminam 50% do esforço</h3>
-    <div class="insight"><b>Simetria 1 — ER ≈ IR:</b> os verbos terminados em -ER e -IR têm desinências <b>idênticas</b> em quase tudo. Só diferem no <i>nosotros/vosotros</i> do presente (com<b>emos</b>/viv<b>imos</b>). No passado são 100% iguais.</div>
-    <div class="insight"><b>Simetria 2 — O subjuntivo inverte a vogal:</b> verbos -AR usam vogal <b>E</b> (hable), verbos -ER/-IR usam vogal <b>A</b> (coma, viva). É o "tempo espelhado".</div>
-    <div class="insight"><b>Simetria 3 — vosotros é previsível:</b> termina sempre em -áis / -éis / -ís / -is. Nunca ditonga (é pens<b>áis</b>, não "piensáis").</div>
-  </div>
-
-  <div class="card">
-    <h3>2. Construtor de conjugação — veja a regra em ação</h3>
-    <p class="sub" style="margin-bottom:10px">Escolha e veja a forma <span style="color:var(--stem)">raiz</span>+<span style="color:var(--end)">desinência</span> montada peça por peça.</p>
-    <div class="row">
-      <select id="b-verb"></select>
-      <select id="b-tense"></select>
-    </div>
-    <div class="builder-out" id="b-out"></div>
-  </div>
-
-  <div class="card">
-    <h3>3. Os 6 verbos-motores (o núcleo irregular)</h3>
-    <p class="sub" style="margin-bottom:6px">Decorar é inevitável — mas há padrões. Clique para conjugar.</p>
-    <div id="motor-pills"></div>
-    <div class="builder-out" id="motor-out"></div>
-    <div class="insight" style="margin-top:14px"><b>Padrão -go:</b> tener→ten<b>go</b>, hacer→ha<b>go</b>, decir→di<b>go</b>, poner→pon<b>go</b>, salir→sal<b>go</b>. Essa forma "eu" em -go vira a <b>raiz do subjuntivo inteiro</b> (tenga, haga, diga, ponga, salga) e do imperativo negativo.</div>
-    <div class="insight"><b>SER e IR são iguais no passado</b> (fui, fuiste, fue...). O contexto desfaz: <i>"fui médico"</i> (ser) vs <i>"fui a Madrid"</i> (ir).</div>
-  </div>
-
-  <div class="card">
-    <h3>4. Os 3 tempos extras que fecham o sistema</h3>
-    <div class="insight"><b>Pretérito Perfecto Compuesto:</b> auxiliar <b>HABER no presente</b> (he, has, ha, hemos, habéis, han) + particípio. Particípios irregulares dos motores: hacer→<b>hecho</b>, decir→<b>dicho</b>, escribir→<b>escrito</b>, volver→<b>vuelto</b>, poner→<b>puesto</b>, ver→visto, abrir→abierto.</div>
-    <div class="insight"><b>Imperativo afirmativo de vosotros — regra infalível:</b> pegue o infinitivo, tire o <b>-r</b>, ponha <b>-d</b>. venir→veni<b>d</b>, traer→trae<b>d</b>, hablar→habla<b>d</b>. Sem exceção.</div>
-    <div class="insight"><b>Imperativo negativo (qualquer pessoa):</b> use a forma do <b>Presente de Subjuntivo</b>. "no hagas", "no vayáis", "no digas".</div>
-  </div>
+<!-- ========== APRENDER ========== -->
+<section class="view active" id="aprender">
+  <div id="trilha"></div>
+  <div id="licao" style="display:none"></div>
 </section>
 
-<!-- ===================== VIEW 2: LÓGICA ===================== -->
-<section class="view" id="logica">
-  <h2>A Lógica dos Tempos</h2>
-  <p class="sub">O difícil não é conjugar — é <b>escolher</b> o tempo. Passe qualquer frase por este algoritmo. Com o tempo, você roda a árvore na cabeça automaticamente.</p>
-
-  <div class="card">
-    <div class="crumbs" id="crumbs"></div>
-    <div id="tree-node"></div>
-    <div style="margin-top:14px"><button class="ghost" onclick="resetTree()">↺ Recomeçar a árvore</button></div>
+<!-- ========== CONSULTAR ========== -->
+<section class="view" id="consultar">
+  <h2>Consultar</h2>
+  <p class="sub">Material de apoio. Volte aqui quando tiver dúvida — sem pressão de ordem.</p>
+  <div class="subnav">
+    <button class="on" data-c="tabelas">📋 Tabelas</button>
+    <button data-c="arvore">🌳 Que tempo usar?</button>
+    <button data-c="correl">🔗 Comparar c/ português</button>
+    <button data-c="livre">🎯 Treino livre</button>
   </div>
 
-  <div class="card">
-    <h3>📌 Glossário de disparadores (agrupado pela lógica)</h3>
-    <p class="step-label">Forçam SUBJUNTIVO</p>
-    <p style="font-size:14px;margin:2px 0">Juízo/emoção/dúvida + "que": <i>Es fundamental que, Es una lástima que, No creo que, No es evidente que, Me sorprende que, Quiero que</i>.</p>
-    <p style="font-size:14px;margin:6px 0"><i>Antes de que</i> → sempre. · <i>Cuando / En cuanto</i> apontando p/ <b>futuro</b> → subjuntivo (<i>En cuanto terminemos…</i>).</p>
-    <div class="trap"><b>⚠️ Pegadinhas (parecem subjuntivo mas são INDICATIVO):</b> <i>A lo mejor</i> (= talvez) → indicativo (<i>viajan</i>). · <i>Siempre que</i> / <i>Cuando</i> como hábito → indicativo (<i>voy</i>).</div>
-    <p class="step-label">Pretérito Perfecto Compuesto (he + particípio)</p>
-    <p style="font-size:14px;margin:2px 0">Período ainda "aberto"/conectado ao agora: <i>hoy, esta semana, este año, esta mañana, todavía no, alguna vez, últimamente</i>.</p>
-    <p class="step-label">Pretérito Indefinido (passado fechado/datado)</p>
-    <p style="font-size:14px;margin:2px 0"><i>ayer, anteayer, el mes pasado, hace cinco años, en 2024, el año pasado</i>.</p>
-    <p class="step-label">Pretérito Imperfecto (cenário, hábito, descrição)</p>
-    <p style="font-size:14px;margin:2px 0"><i>cuando era niño, mientras…, soler (solía), descrições de fundo</i> ("la oficina estaba situada…").</p>
-  </div>
-</section>
-
-<!-- ===================== VIEW 2.5: CORRELAÇÕES ===================== -->
-<section class="view" id="correl">
-  <h2>Correlações</h2>
-  <p class="sub">Você já tem o português inteiro na cabeça. Aprender por correlação = ver <b>o gene comum</b> entre coisas diferentes e <b>a única coisa que muda</b> entre coisas parecidas. Use isto como atalho.</p>
-
-  <div class="card">
-    <h3>🇧🇷↔🇪🇸 Ponte com o Português</h3>
-    <p class="sub" style="margin-bottom:8px">Clique para alternar entre <b>onde transfere de graça</b> e <b>onde o PT te engana</b>.</p>
-    <div>
-      <span class="pill on" id="pt-free" onclick="ptTab('free')">✅ Transfere de graça</span>
-      <span class="pill" id="pt-trap" onclick="ptTab('trap')">⚠️ Pegadinhas do PT</span>
+  <div class="csub on" id="c-tabelas">
+    <div class="card">
+      <h3>Verbos regulares — monte qualquer forma</h3>
+      <div style="display:flex;gap:8px;flex-wrap:wrap"><select id="b-verb"></select><select id="b-tense"></select></div>
+      <div class="card" id="b-out" style="margin:12px 0 0;background:#0c1424"></div>
     </div>
-    <div id="pt-out" style="margin-top:12px"></div>
-  </div>
-
-  <div class="card">
-    <h3>⚖️ Pares mínimos — isole o que muda</h3>
-    <p class="sub" style="margin-bottom:8px">Duas formas quase idênticas. A diferença <b>é</b> a informação. Grave a diferença, não a palavra.</p>
-    <div id="pairs-out"></div>
-  </div>
-
-  <div class="card">
-    <h3>🧬 Famílias por mecanismo (1 padrão destrava vários verbos)</h3>
-    <p class="sub" style="margin-bottom:8px">Não decore verbo por verbo — reconheça o <b>movimento</b> que eles compartilham.</p>
-    <div id="fam-pills"></div>
-    <div class="builder-out" id="fam-out"></div>
-  </div>
-</section>
-
-<!-- ===================== VIEW 3: PRÁTICA ===================== -->
-<section class="view" id="pratica">
-  <h2>Prática com Raciocínio</h2>
-  <p class="sub">Para cada frase: <b>(1)</b> decida o tempo usando a árvore, <b>(2)</b> conjugue, <b>(3)</b> entenda a regra. Filtre pelo que quer treinar.</p>
-
-  <div class="card" style="padding:14px 18px">
-    <div id="filters"></div>
-  </div>
-
-  <div class="card">
-    <div class="stats">
-      <span>Questão <b id="q-idx">1</b>/<b id="q-total">42</b></span>
-      <span>Acertos: <b id="q-ok">0</b></span>
-      <span>Erros: <b id="q-bad">0</b></span>
-    </div>
-    <div class="prog"><div id="progbar"></div></div>
-
-    <div class="ex-cue" id="ex-cue"></div>
-    <div class="ex-sentence" id="ex-sentence"></div>
-
-    <div class="step-label">Passo 1 — Que tempo/modo a frase pede?</div>
-    <div class="choice" id="ex-choice"></div>
-
-    <div class="step-label">Passo 2 — Conjugue o verbo</div>
-    <div class="row">
-      <input type="text" id="ex-input" placeholder="digite a forma…" autocomplete="off" spellcheck="false">
-      <button class="act" id="ex-check">Verificar</button>
-      <button class="ghost" id="ex-skip">Pular →</button>
-    </div>
-    <div class="legend">Dica: acentos contam, mas eu aviso se você acertou só errando o acento.</div>
-
-    <div class="feedback" id="ex-fb"></div>
-
-    <div class="row" id="ex-next-row" style="margin-top:14px;display:none">
-      <button class="act" id="ex-next">Próxima →</button>
+    <div class="card">
+      <h3>Os 6 verbos que mais aparecem</h3>
+      <div id="motor-pills"></div>
+      <div class="card" id="motor-out" style="margin:10px 0 0;background:#0c1424"></div>
     </div>
   </div>
-  <div class="row"><button class="ghost" onclick="resetPractice()">↺ Reiniciar prática e placar</button></div>
+
+  <div class="csub" id="c-arvore">
+    <div class="card">
+      <p class="legend" id="crumbs"></p>
+      <div id="tree-node"></div>
+      <button class="pill" style="margin-top:10px" onclick="resetTree()">↺ Recomeçar</button>
+    </div>
+  </div>
+
+  <div class="csub" id="c-correl">
+    <div class="card">
+      <h3>🇧🇷↔🇪🇸 O que muda do português</h3>
+      <span class="pill on" id="pt-free" onclick="ptTab('free')">✅ Igual / fácil</span>
+      <span class="pill" id="pt-trap" onclick="ptTab('trap')">⚠️ Cuidado</span>
+      <div id="pt-out" style="margin-top:10px"></div>
+    </div>
+    <div class="card">
+      <h3>🧬 Famílias de verbos (1 padrão, vários verbos)</h3>
+      <div id="fam-pills"></div>
+      <div class="card" id="fam-out" style="margin:10px 0 0;background:#0c1424"></div>
+    </div>
+  </div>
+
+  <div class="csub" id="c-livre">
+    <div class="card">
+      <p class="legend">42 frases reais, em ordem aleatória. Conjugue o verbo no tempo pedido.</p>
+      <div id="free-host"></div>
+    </div>
+  </div>
 </section>
 
 </main>
-<footer>Feito a partir do "Guia Definitivo de Conjugação — Sistema Core 80/20". Progresso salvo no seu navegador.</footer>
+<footer>Aprenda no seu ritmo. Seu progresso fica salvo neste aparelho.</footer>
 
 <script>
-/* ============ DADOS: conjugação regular ============ */
-const PERSONS = ["yo","tú","él/ella","nosotros","vosotros","ellos"];
-const REG = {
-  hablar:{stem:"habl",type:"-AR"}, comer:{stem:"com",type:"-ER"}, vivir:{stem:"viv",type:"-IR"}
+/* ===================== DADOS BÁSICOS ===================== */
+const PERSONS=["yo","tú","él/ella","nosotros","vosotros","ellos"];
+const REG={hablar:{stem:"habl",type:"-AR"},comer:{stem:"com",type:"-ER"},vivir:{stem:"viv",type:"-IR"}};
+const ENDINGS={
+  "Presente":{"-AR":["o","as","a","amos","áis","an"],"-ER":["o","es","e","emos","éis","en"],"-IR":["o","es","e","imos","ís","en"],note:"-ER e -IR só diferem em nós/vós."},
+  "Passado fechado (Indefinido)":{"-AR":["é","aste","ó","amos","asteis","aron"],"-ER":["í","iste","ió","imos","isteis","ieron"],"-IR":["í","iste","ió","imos","isteis","ieron"],note:"-ER e -IR são iguais. Ação que terminou (ayer)."},
+  "Passado cenário (Imperfeito)":{"-AR":["aba","abas","aba","ábamos","abais","aban"],"-ER":["ía","ías","ía","íamos","íais","ían"],"-IR":["ía","ías","ía","íamos","íais","ían"],note:"Cenário/hábito. Lembra o português: hablaba≈falava."},
+  "Subjuntivo":{"-AR":["e","es","e","emos","éis","en"],"-ER":["a","as","a","amos","áis","an"],"-IR":["a","as","a","amos","áis","an"],note:"Vogal invertida: -AR vira E, -ER/-IR viram A."}
 };
-const ENDINGS = {
-  "Presente de Indicativo":{
-    "-AR":["o","as","a","amos","áis","an"], "-ER":["o","es","e","emos","éis","en"], "-IR":["o","es","e","imos","ís","en"],
-    note:"-ER e -IR só diferem no nós/vós (comemos vs vivimos)."},
-  "Pretérito Indefinido":{
-    "-AR":["é","aste","ó","amos","asteis","aron"], "-ER":["í","iste","ió","imos","isteis","ieron"], "-IR":["í","iste","ió","imos","isteis","ieron"],
-    note:"-ER e -IR são IDÊNTICOS aqui. Passado pontual e fechado."},
-  "Pretérito Imperfecto":{
-    "-AR":["aba","abas","aba","ábamos","abais","aban"], "-ER":["ía","ías","ía","íamos","íais","ían"], "-IR":["ía","ías","ía","íamos","íais","ían"],
-    note:"-ER/-IR idênticos. Cenário, hábito e descrição no passado."},
-  "Presente de Subjuntivo":{
-    "-AR":["e","es","e","emos","éis","en"], "-ER":["a","as","a","amos","áis","an"], "-IR":["a","as","a","amos","áis","an"],
-    note:"VOGAL INVERTIDA: -AR usa E, -ER/-IR usam A. O 'modo da incerteza'."}
+const MOTOR={
+  SER:{p:["soy","eres","es","somos","sois","son"],imp:"sé / sed"},
+  ESTAR:{p:["estoy","estás","está","estamos","estáis","están"],imp:"está / estad"},
+  IR:{p:["voy","vas","va","vamos","vais","van"],imp:"ve / id"},
+  TENER:{p:["tengo","tienes","tiene","tenemos","tenéis","tienen"],imp:"ten / tened"},
+  HACER:{p:["hago","haces","hace","hacemos","hacéis","hacen"],imp:"haz / haced"},
+  DECIR:{p:["digo","dices","dice","decimos","decís","dicen"],imp:"di / decid"}
 };
 
-/* ============ DADOS: verbos motores ============ */
-const MOTOR = {
-  SER:{ "Presente de Indicativo":["soy","eres","es","somos","sois","son"],
-        "Pretérito Indefinido":["fui","fuiste","fue","fuimos","fuisteis","fueron"],
-        "Presente de Subjuntivo":["sea","seas","sea","seamos","seáis","sean"],
-        imp:"sé / sed" },
-  ESTAR:{ "Presente de Indicativo":["estoy","estás","está","estamos","estáis","están"],
-        "Pretérito Indefinido":["estuve","estuviste","estuvo","estuvimos","estuvisteis","estuvieron"],
-        "Presente de Subjuntivo":["esté","estés","esté","estemos","estéis","estén"],
-        imp:"está / estad" },
-  IR:{ "Presente de Indicativo":["voy","vas","va","vamos","vais","van"],
-        "Pretérito Indefinido":["fui","fuiste","fue","fuimos","fuisteis","fueron"],
-        "Presente de Subjuntivo":["vaya","vayas","vaya","vayamos","vayáis","vayan"],
-        imp:"ve / id" },
-  TENER:{ "Presente de Indicativo":["tengo","tienes","tiene","tenemos","tenéis","tienen"],
-        "Pretérito Indefinido":["tuve","tuviste","tuvo","tuvimos","tuvisteis","tuvieron"],
-        "Presente de Subjuntivo":["tenga","tengas","tenga","tengamos","tengáis","tengan"],
-        imp:"ten / tened" },
-  HACER:{ "Presente de Indicativo":["hago","haces","hace","hacemos","hacéis","hacen"],
-        "Pretérito Indefinido":["hice","hiciste","hizo","hicimos","hicisteis","hicieron"],
-        "Presente de Subjuntivo":["haga","hagas","haga","hagamos","hagáis","hagan"],
-        imp:"haz / haced" },
-  DECIR:{ "Presente de Indicativo":["digo","dices","dice","decimos","decís","dicen"],
-        "Pretérito Indefinido":["dije","dijiste","dijo","dijimos","dijisteis","dijeron"],
-        "Presente de Subjuntivo":["diga","digas","diga","digamos","digáis","digan"],
-        imp:"di / decid" }
-};
-
-/* ============ DADOS: 42 exercícios ============ */
-const TENSES = ["Presente de Indicativo","Pretérito Indefinido","Pretérito Imperfecto",
-  "Pretérito Perfecto Compuesto","Presente de Subjuntivo","Imperativo Afirmativo","Imperativo Negativo"];
-const EX = [
- {b:"Cada mañana yo",a:" a las seis para revisar las métricas de la empresa.",v:"despertarse",p:"yo",t:"Presente de Indicativo",ans:"me despierto",why:"Verbo reflexivo com ditongação e→ie na 1ª pessoa do singular.",cat:"pres"},
- {b:"Ayer ellos",a:" que la base de datos no tenía fallos.",v:"decir",p:"ellos",t:"Pretérito Indefinido",ans:"dijeron",why:"Irregular: raiz 'dij-' + terminação '-eron'. Marcador 'Ayer' = passado fechado.",c:"Imperfeito <b>decían</b> = 'costumavam dizer' (hábito). Aqui é um ato pontual e fechado → indefinido.",cat:"indef"},
- {b:"Esta semana nosotros",a:" un avance tremendo en marketing.",v:"hacer",p:"nosotros",t:"Pretérito Perfecto Compuesto",ans:"hemos hecho",why:"'Esta semana' = período aberto → composto. Auxiliar 'hemos' + particípio irregular 'hecho'.",c:"Indefinido <b>hicimos</b> entraria se o período fosse fechado (ex: 'la semana pasada'). 'Esta semana' ainda corre → composto.",cat:"ppc"},
- {b:"Cuando",a:" niños, vosotros no teníais que preocuparos por contratos.",v:"ser",p:"vosotros",t:"Pretérito Imperfecto",ans:"erais",why:"Ser é 1 dos 3 únicos irregulares do imperfeito. Descreve cenário no passado.",cat:"imperf"},
- {b:"Es fundamental que tú",a:" manejar herramientas de IA.",v:"saber",p:"tú",t:"Presente de Subjuntivo",ans:"sepas",why:"'Es fundamental que' = juízo de valor → subjuntivo. Raiz própria 'sep-'.",c:"Indicativo <b>sabes</b> afirmaria como fato ('tú sabe'). O 'que' de juízo de valor transforma em exigência → subjuntivo.",cat:"subj"},
- {b:"¡",a:" aquí ahora mismo y mirad este diseño!",v:"venir",p:"vosotros",t:"Imperativo Afirmativo",ans:"venid",why:"Regra infalível do vosotros afirmativo: infinitivo − r + d → veni-d.",cat:"impA"},
- {b:"El año pasado la empresa",a:" tres nuevas oficinas en el norte.",v:"abrir",p:"él/ella",t:"Pretérito Indefinido",ans:"abrió",why:"Regular na 3ª pessoa. 'El año pasado' = passado fechado.",cat:"indef"},
- {b:"No creo que ellos",a:" entregar el informe hoy de tarde.",v:"poder",p:"ellos",t:"Presente de Subjuntivo",ans:"puedan",why:"'No creo que' = dúvida → subjuntivo. Ditongação o→ue.",cat:"subj"},
- {b:"Antes, nosotros",a:" programar en lenguajes nativos.",v:"soler",p:"nosotros",t:"Pretérito Imperfecto",ans:"solíamos",why:"'Soler' indica hábito passado → imperfeito por natureza.",cat:"imperf"},
- {b:"Hoy tú",a:" un correo de alta prioridad para el consulado.",v:"escribir",p:"tú",t:"Pretérito Perfecto Compuesto",ans:"has escrito",why:"'Hoy' = período aberto → composto. Particípio irregular 'escrito'.",cat:"ppc"},
- {b:"Si vosotros",a:" listos, daremos inicio a la auditoría.",v:"estar",p:"vosotros",t:"Presente de Indicativo",ans:"estáis",why:"Presente de indicativo de vosotros, com acento gráfico: est-áis.",cat:"pres"},
- {b:"¡No",a:" ruido mientras el cliente está hablando!",v:"hacer",p:"tú",t:"Imperativo Negativo",ans:"hagas",why:"Imperativo negativo usa a forma do subjuntivo: 'no hagas'.",cat:"impN"},
- {b:"En cuanto nosotros",a:" este sprint, lanzaremos la interfaz.",v:"terminar",p:"nosotros",t:"Presente de Subjuntivo",ans:"terminemos",why:"'En cuanto' projetado p/ futuro → subjuntivo.",cat:"subj"},
- {b:"A lo mejor ellos",a:" a Valladolid la semana que viene.",v:"viajar",p:"ellos",t:"Presente de Indicativo",ans:"viajan",why:"PEGADINHA: 'A lo mejor' (talvez) exige SEMPRE indicativo, apesar da probabilidade.",c:"O erro clássico é pôr subjuntivo <b>viajen</b> (porque 'talvez' parece dúvida). Mas 'A lo mejor' rejeita o subjuntivo.",cat:"pres"},
- {b:"¿Alguna vez",a:" un modelo de negocio basado en infoproductos?",v:"probar",p:"tú",t:"Pretérito Perfecto Compuesto",ans:"has probado",why:"'Alguna vez' = experiência de vida → composto.",cat:"ppc"},
- {b:"Mientras el diseñador",a:", el programador corregía el código.",v:"maquetar",p:"él/ella",t:"Pretérito Imperfecto",ans:"maquetaba",why:"Ação durativa de fundo com 'mientras' → imperfeito.",c:"Indefinido <b>maquetó</b> marcaria um ato concluído e pontual. 'Mientras' pede o pano de fundo durativo → imperfeito.",cat:"imperf"},
- {b:"Anteayer yo",a:" una reunión con los inversores de NUNA.",v:"tener",p:"yo",t:"Pretérito Indefinido",ans:"tuve",why:"Irregular: raiz 'tuv-'. 'Anteayer' = passado fechado.",cat:"indef"},
- {b:"Quiero que vosotros",a:" los archivos dentro del servidor.",v:"poner",p:"vosotros",t:"Presente de Subjuntivo",ans:"pongáis",why:"'Quiero que' = desejo → subjuntivo. Raiz 'pong-' (vinda de 'pongo').",cat:"subj"},
- {b:"¡",a:" el favor de enviar la factura al departamento!",v:"hacer",p:"tú",t:"Imperativo Afirmativo",ans:"haz",why:"Imperativo afirmativo irregular de tú: 'haz'.",cat:"impA"},
- {b:"Este año nosotros",a:" un crecimiento orgánico del 90%.",v:"lograr",p:"nosotros",t:"Pretérito Perfecto Compuesto",ans:"hemos logrado",why:"'Este año' = período aberto → composto. Particípio regular 'logrado'.",cat:"ppc"},
- {b:"Cuando",a:" en León, la conexión era de baja calidad.",v:"vivir",p:"él/ella",t:"Pretérito Imperfecto",ans:"vivía",why:"Habitação durativa no passado (cenário) → imperfeito.",c:"Par mínimo clássico: <b>viví</b> en León = 'morei' (período fechado e terminado). <b>vivía</b> = 'morava' (cenário contínuo). Mesma frase, sentidos diferentes.",cat:"imperf"},
- {b:"Ayer yo finalmente",a:" resolver el error de sintaxis del checkout.",v:"conseguir",p:"yo",t:"Pretérito Indefinido",ans:"conseguí",why:"-IR regular na 1ª pessoa. 'Ayer' = passado fechado.",cat:"indef"},
- {b:"No es evidente que la plataforma",a:" tanto volumen de usuarios.",v:"soportar",p:"él/ella",t:"Presente de Subjuntivo",ans:"soporte",why:"'No es evidente que' introduz dúvida → subjuntivo.",cat:"subj"},
- {b:"¿A qué hora",a:" salir hacia la aduana mañana?",v:"pensar",p:"vosotros",t:"Presente de Indicativo",ans:"pensáis",why:"Vosotros NÃO ditonga (não é 'piensáis'). Indicativo presente.",cat:"pres"},
- {b:"¡No",a:" por esa calle, las obras la han cortado!",v:"ir",p:"vosotros",t:"Imperativo Negativo",ans:"vayáis",why:"Negativo → forma do subjuntivo de ir: 'no vayáis'.",cat:"impN"},
- {b:"Últimamente vosotros",a:" una conducta impecable en la gestión.",v:"tener",p:"vosotros",t:"Pretérito Perfecto Compuesto",ans:"habéis tenido",why:"'Últimamente' = período aberto → composto. Auxiliar vosotros 'habéis' + 'tenido'.",cat:"ppc"},
- {b:"Hace cinco años ellos",a:" toda su propiedad en Valladolid.",v:"vender",p:"ellos",t:"Pretérito Indefinido",ans:"vendieron",why:"'Hace cinco años' = ponto datado fechado → indefinido.",c:"Imperfeito <b>vendían</b> = 'vendiam/costumavam vender' (hábito). Aqui foi um ato único e datado → indefinido.",cat:"indef"},
- {b:"Es una lástima que el presupuesto no",a:" suficiente.",v:"ser",p:"él/ella",t:"Presente de Subjuntivo",ans:"sea",why:"'Es una lástima que' = valoração subjetiva → subjuntivo.",cat:"subj"},
- {b:"Siempre que yo",a:" a Madrid, visito los mismos museos.",v:"ir",p:"yo",t:"Presente de Indicativo",ans:"voy",why:"PEGADINHA: 'Siempre que' como hábito no presente → indicativo.",cat:"pres"},
- {b:"¡",a:" todos los documentos que os pedí ayer!",v:"traer",p:"vosotros",t:"Imperativo Afirmativo",ans:"traed",why:"Vosotros afirmativo: infinitivo − r + d → trae-d.",cat:"impA"},
- {b:"El mes pasado tú no",a:" a las notificaciones del gobierno.",v:"contestar",p:"tú",t:"Pretérito Indefinido",ans:"contestaste",why:"'El mes pasado' = passado fechado → indefinido.",cat:"indef"},
- {b:"Antes de que tú",a:", recuerda apagar los ordenadores.",v:"salir",p:"tú",t:"Presente de Subjuntivo",ans:"salgas",why:"'Antes de que' exige subjuntivo em 100% dos casos. Raiz 'salg-'.",cat:"subj"},
- {b:"Todavía los técnicos no",a:" de la conferencia de tecnología.",v:"volver",p:"ellos",t:"Pretérito Perfecto Compuesto",ans:"han vuelto",why:"'Todavía no' → composto. Particípio irregular 'vuelto'.",cat:"ppc"},
- {b:"La antigua oficina",a:" situada a pocos metros de la estación.",v:"estar",p:"él/ella",t:"Pretérito Imperfecto",ans:"estaba",why:"Descrição de localização/cenário no passado → imperfeito.",c:"Indefinido <b>estuvo</b> marcaria um período fechado ('estuvo allí dos años'). Descrição estática de cenário → imperfeito.",cat:"imperf"},
- {b:"¿Vosotros",a:" a los nuevos socios de la distribuidora?",v:"conocer",p:"vosotros",t:"Presente de Indicativo",ans:"conocéis",why:"Indicativo presente de vosotros, com acento: conoc-éis.",cat:"pres"},
- {b:"¡No me",a:" que has vuelto a perder las claves!",v:"decir",p:"tú",t:"Imperativo Negativo",ans:"digas",why:"Negativo → subjuntivo de decir: 'no digas'.",cat:"impN"},
- {b:"Cuando",a:" al aeropuerto de Barajas, buscad el coche.",v:"llegar",p:"vosotros",t:"Presente de Subjuntivo",ans:"lleguéis",why:"'Cuando' p/ futuro → subjuntivo. Ajuste ortográfico g→gu (lleguéis).",cat:"subj"},
- {b:"En 2024 la facturación",a:" debido a las restricciones.",v:"caer",p:"él/ella",t:"Pretérito Indefinido",ans:"cayó",why:"'En 2024' fechado → indefinido. 'i' intervocálica vira 'y' (cayó).",cat:"indef"},
- {b:"Me sorprende que tú no",a:" la diferencia entre objeto directo e indirecto.",v:"entender",p:"tú",t:"Presente de Subjuntivo",ans:"entiendas",why:"'Me sorprende que' = reação/emoção → subjuntivo. Ditongação e→ie.",cat:"subj"},
- {b:"¡",a:" una copia del recibo antes de la transferencia!",v:"pedir",p:"tú",t:"Imperativo Afirmativo",ans:"pide",why:"Afirmativo de tú; pedir sofre mudança vocálica e→i (pide).",cat:"impA"},
- {b:"Esta mañana yo",a:" las carpetas encima de tu mesa.",v:"poner",p:"yo",t:"Pretérito Perfecto Compuesto",ans:"he puesto",why:"'Esta mañana' = período aberto → composto. Particípio irregular 'puesto'.",cat:"ppc"},
- {b:"Mientras vosotros",a:", el sistema ejecutaba los backups.",v:"dormir",p:"vosotros",t:"Pretérito Imperfecto",ans:"dormíais",why:"Ações paralelas de fundo com 'mientras' → imperfeito.",cat:"imperf"}
+/* ===================== LIÇÕES ===================== */
+const LESSONS=[
+{id:1,title:"O esqueleto do verbo",sub:"parte fixa + terminação",
+ teach:`<h3>Todo verbo tem 2 partes</h3>
+  <p>Um verbo em espanhol é só uma <b>parte fixa</b> + uma <b>terminação</b> que muda.</p>
+  <p>Para achar a parte fixa (a "raiz"), pegue o verbo no infinitivo e tire o final:</p>
+  <div class="ex-box">habl<b>ar</b> → tira o <b>-ar</b> → sobra <span class="hl">habl</span></div>
+  <p>Agora é só grudar a terminação certa:</p>
+  <div class="ex-box"><span class="stem">habl</span>+<span class="end">o</span> = hablo (eu falo) · <span class="stem">habl</span>+<span class="end">as</span> = hablas (você fala)</div>
+  <p>Sabendo as terminações, você monta <b>qualquer</b> verbo. É isso que vamos treinar.</p>`,
+ drills:[
+  {cue:"infinitivo: hablar",text:"Qual é a parte fixa (raiz)?",a:["habl"]},
+  {cue:"infinitivo: comer",text:"Qual é a parte fixa (raiz)?",a:["com"]},
+  {cue:"infinitivo: vivir",text:"Qual é a parte fixa (raiz)?",a:["viv"]},
+  {cue:"junte as peças",text:"habl + amos = ?",a:["hablamos"]}
+ ]},
+{id:2,title:"Presente: verbos em -AR",sub:"o tempo do agora",
+ teach:`<h3>Terminações do presente (-AR)</h3>
+  <p>Para verbos terminados em <b>-AR</b>, as terminações do presente são:</p>
+  <table><tr><th>quem</th><th>termina em</th><th>hablar</th></tr>
+   <tr><td>yo</td><td class="end">-o</td><td>hablo</td></tr>
+   <tr><td>tú</td><td class="end">-as</td><td>hablas</td></tr>
+   <tr><td>él/ella</td><td class="end">-a</td><td>habla</td></tr>
+   <tr><td>nosotros</td><td class="end">-amos</td><td>hablamos</td></tr>
+   <tr><td>vosotros</td><td class="end">-áis</td><td>habláis</td></tr>
+   <tr><td>ellos</td><td class="end">-an</td><td>hablan</td></tr></table>
+  <p>Funciona igual para <b>trabajar, estudiar, mirar, comprar</b>… todos os -AR.</p>`,
+ drills:[
+  {cue:"trabajar · yo",text:"",a:["trabajo"]},
+  {cue:"estudiar · nosotros",text:"",a:["estudiamos"]},
+  {cue:"hablar · ellos",text:"",a:["hablan"]},
+  {cue:"comprar · tú",text:"",a:["compras"]}
+ ]},
+{id:3,title:"Presente: -ER e -IR",sub:"quase idênticos",
+ teach:`<h3>-ER e -IR andam juntos</h3>
+  <p>As terminações são <b>quase iguais</b>. Só mudam em <i>nós</i> e <i>vós</i>:</p>
+  <table><tr><th>quem</th><th>-ER (comer)</th><th>-IR (vivir)</th></tr>
+   <tr><td>yo</td><td>como</td><td>vivo</td></tr>
+   <tr><td>tú</td><td>comes</td><td>vives</td></tr>
+   <tr><td>él/ella</td><td>come</td><td>vive</td></tr>
+   <tr><td>nosotros</td><td class="end">comemos</td><td class="end">vivimos</td></tr>
+   <tr><td>vosotros</td><td class="end">coméis</td><td class="end">vivís</td></tr>
+   <tr><td>ellos</td><td>comen</td><td>viven</td></tr></table>
+  <p>Truque: a diferença está só em <b>comEmos</b> vs <b>vivImos</b>.</p>`,
+ drills:[
+  {cue:"comer · yo",text:"",a:["como"]},
+  {cue:"vivir · nosotros",text:"",a:["vivimos"]},
+  {cue:"comer · nosotros",text:"",a:["comemos"]},
+  {cue:"beber · ellos",text:"",a:["beben"]}
+ ]},
+{id:4,title:"Passado fechado",sub:"ação que terminou (Indefinido)",
+ teach:`<h3>Passado fechado (Pretérito Indefinido)</h3>
+  <p>Use quando a ação <b>terminou num momento definido</b>. Pistas na frase:</p>
+  <div class="ex-box"><span class="hl">ayer · el mes pasado · en 2024 · hace 5 años</span></div>
+  <p>Terminações:</p>
+  <table><tr><th>quem</th><th>-AR</th><th>-ER / -IR</th></tr>
+   <tr><td>yo</td><td>hablé</td><td>comí</td></tr>
+   <tr><td>tú</td><td>hablaste</td><td>comiste</td></tr>
+   <tr><td>él/ella</td><td>habló</td><td>comió</td></tr>
+   <tr><td>ellos</td><td>hablaron</td><td>comieron</td></tr></table>
+  <div class="ex-box">"Ayer <span class="hl">hablé</span> con el cliente."</div>`,
+ drills:[
+  {cue:"hablar · yo",text:"Ayer yo ▢ con el cliente.",a:["hablé","hable"]},
+  {cue:"vender · ellos",text:"El mes pasado ellos ▢ la casa.",a:["vendieron"]},
+  {cue:"comer · yo",text:"",a:["comí","comi"]},
+  {cue:"hablar · él",text:"",a:["habló","hablo"]}
+ ]},
+{id:5,title:"Passado cenário",sub:"como era antes (Imperfeito)",
+ teach:`<h3>Passado cenário (Pretérito Imperfeito)</h3>
+  <p>Use para <b>descrever</b>, falar de <b>hábito</b> ou de algo <b>contínuo</b> no passado. Em português = "morava", "fazia", "ia".</p>
+  <p>Pistas: <span class="hl">antes · mientras · cuando era niño</span></p>
+  <table><tr><th>quem</th><th>-AR</th><th>-ER / -IR</th></tr>
+   <tr><td>yo</td><td>hablaba</td><td>comía</td></tr>
+   <tr><td>tú</td><td>hablabas</td><td>comías</td></tr>
+   <tr><td>él/ella</td><td>hablaba</td><td>comía</td></tr>
+   <tr><td>ellos</td><td>hablaban</td><td>comían</td></tr></table>
+  <p>💡 Parece o português: habl<b>aba</b> ≈ fal<b>ava</b>.</p>`,
+ drills:[
+  {cue:"hablar · yo",text:"Antes yo ▢ inglés todos los días.",a:["hablaba"]},
+  {cue:"vivir · ella",text:"Cuando ▢ en León, era feliz.",a:["vivía","vivia"]},
+  {cue:"comer · ellos",text:"",a:["comían","comian"]},
+  {cue:"trabajar · nosotros",text:"",a:["trabajábamos","trabajabamos"]}
+ ]},
+{id:6,title:"Fechado x Cenário",sub:"o contraste mais importante",
+ teach:`<h3>Qual passado usar?</h3>
+  <p>A <b>mesma frase</b> muda de sentido:</p>
+  <div class="ex-box"><span class="hl">viví</span> en León = morei (e acabou)<br><span class="hl">vivía</span> en León = morava (cenário)</div>
+  <p>Regra simples:</p>
+  <p>• Ação pontual / que acabou → <b>fechado</b> (indefinido)<br>• Pano de fundo / hábito / descrição → <b>cenário</b> (imperfeito)</p>
+  <div class="warnbox"><b>Dica:</b> "mientras" quase sempre pede o cenário (imperfeito).</div>`,
+ drills:[
+  {cue:"comer · yo — ação pontual",text:"Ayer ▢ paella en el restaurante.",a:["comí","comi"]},
+  {cue:"comer · yo — hábito",text:"Antes siempre ▢ en casa.",a:["comía","comia"]},
+  {cue:"trabajar · él — pano de fundo",text:"Mientras él ▢, sonó el teléfono.",a:["trabajaba"]},
+  {cue:"viajar · ellos — pontual",text:"El año pasado ▢ a España.",a:["viajaron"]}
+ ]},
+{id:7,title:"Passado de 'hoje'",sub:"Perfecto + pegadinha do PT",
+ teach:`<h3>Passado ainda 'aberto' (Pretérito Perfecto)</h3>
+  <p>Use quando o tempo ainda <b>não fechou</b>. Pistas: <span class="hl">hoy · esta semana · este año · todavía · alguna vez</span></p>
+  <p>Forma: <b>haber</b> (no presente) + particípio:</p>
+  <div class="ex-box">he, has, ha, hemos, habéis, han + <span class="end">-ado</span> (-AR) / <span class="end">-ido</span> (-ER/-IR)</div>
+  <div class="warnbox"><b>⚠️ Pegadinha:</b> em português você diz "hoje eu fiz". Em espanhol é "hoy <b>he hecho</b>" — não use o passado fechado com "hoy".</div>
+  <p>Particípios irregulares úteis: hacer→<b>hecho</b>, decir→<b>dicho</b>, escribir→<b>escrito</b>, volver→<b>vuelto</b>, poner→<b>puesto</b>.</p>`,
+ drills:[
+  {cue:"hablar · yo",text:"Hoy yo ▢ con ella.",a:["he hablado"]},
+  {cue:"comer · nosotros",text:"Esta semana ▢ fuera dos veces.",a:["hemos comido"]},
+  {cue:"particípio de 'hacer'",text:"",a:["hecho"]},
+  {cue:"volver · ellos",text:"Todavía no ▢ de la oficina.",a:["han vuelto"]}
+ ]},
+{id:8,title:"Os 6 verbos campeões",sub:"irregulares que aparecem sempre",
+ teach:`<h3>Vale a pena decorar estes 6</h3>
+  <p>São irregulares, mas aparecem o tempo todo. No presente:</p>
+  <table><tr><th>quem</th><th>ser</th><th>ir</th><th>tener</th><th>hacer</th></tr>
+   <tr><td>yo</td><td>soy</td><td>voy</td><td>tengo</td><td>hago</td></tr>
+   <tr><td>tú</td><td>eres</td><td>vas</td><td>tienes</td><td>haces</td></tr>
+   <tr><td>él</td><td>es</td><td>va</td><td>tiene</td><td>hace</td></tr>
+   <tr><td>nos.</td><td>somos</td><td>vamos</td><td>tenemos</td><td>hacemos</td></tr>
+   <tr><td>ellos</td><td>son</td><td>van</td><td>tienen</td><td>hacen</td></tr></table>
+  <p>💡 Repare no padrão <b>-go</b> no "yo": ten<b>go</b>, ha<b>go</b>, di<b>go</b>.</p>`,
+ drills:[
+  {cue:"ser · yo",text:"",a:["soy"]},
+  {cue:"tener · yo",text:"",a:["tengo"]},
+  {cue:"ir · nosotros",text:"",a:["vamos"]},
+  {cue:"hacer · yo",text:"",a:["hago"]}
+ ]},
+{id:9,title:"O subjuntivo: o que é",sub:"o modo da não-certeza",
+ teach:`<h3>O subjuntivo</h3>
+  <p>É o modo do <b>desejo, dúvida, emoção e pedido</b>. Quase sempre vem depois de <b>"que"</b>.</p>
+  <p>A forma: pegue a raiz e <b>inverta a vogal</b>:</p>
+  <div class="ex-box">-AR usa <span class="end">E</span> → hable · -ER/-IR usam <span class="end">A</span> → coma, viva</div>
+  <p>💡 Existe igual no português: "quero que eu <b>fale</b>", "que eu <b>coma</b>".</p>
+  <div class="ex-box">"Quiero que tú <span class="hl">hables</span> con él."</div>`,
+ drills:[
+  {cue:"hablar · yo (subjuntivo)",text:"",a:["hable"]},
+  {cue:"comer · yo (subjuntivo)",text:"",a:["coma"]},
+  {cue:"vivir · nosotros (subjuntivo)",text:"",a:["vivamos"]},
+  {cue:"hablar · tú",text:"Quiero que tú ▢ más despacio.",a:["hables"]}
+ ]},
+{id:10,title:"Quando usar subjuntivo",sub:"os gatilhos (e as pegadinhas)",
+ teach:`<h3>Expressões que 'puxam' o subjuntivo</h3>
+  <p>Quando a frase começa com uma destas, o verbo depois do "que" vai para o subjuntivo:</p>
+  <div class="ex-box">Quiero que… · Es importante que… · No creo que… · Antes de que… · Cuando (futuro)…</div>
+  <div class="warnbox"><b>⚠️ Pegadinhas</b> — parecem dúvida mas usam o <b>indicativo</b> normal:<br>• <b>A lo mejor</b> (talvez) → "A lo mejor viajan"<br>• <b>Siempre que</b> (hábito) → "Siempre que voy…"</div>`,
+ drills:[
+  {cue:"estudiar · tú",text:"Es importante que ▢ cada día.",a:["estudies"]},
+  {cue:"vivir · ellos",text:"No creo que ▢ aquí.",a:["vivan"]},
+  {cue:"viajar · ellos — PEGADINHA",text:"A lo mejor ▢ mañana.",a:["viajan"]},
+  {cue:"hablar · tú",text:"Antes de que ▢, lee esto.",a:["hables"]}
+ ]},
+{id:11,title:"Dar ordens (Imperativo)",sub:"faça, não faça",
+ teach:`<h3>Imperativo</h3>
+  <p><b>Ordem afirmativa para "tú":</b> geralmente igual ao "ele" do presente → ¡habla! ¡come!<br>
+  Curtos irregulares: <b>haz, di, ve, ten, pon, ven, sal</b>.</p>
+  <p><b>Ordem afirmativa para "vosotros":</b> regra que nunca falha — pegue o infinitivo, tire o <b>-r</b>, ponha <b>-d</b>:</p>
+  <div class="ex-box">hablar→<span class="hl">hablad</span> · comer→<span class="hl">comed</span> · venir→<span class="hl">venid</span></div>
+  <p><b>Ordem negativa</b> (qualquer pessoa): use o <b>subjuntivo</b> → ¡no hables! ¡no vengáis!</p>`,
+ drills:[
+  {cue:"hablar · vosotros (ordem)",text:"¡▢ más alto!",a:["hablad"]},
+  {cue:"comer · vosotros (ordem)",text:"¡▢ algo antes de salir!",a:["comed"]},
+  {cue:"hacer · tú (ordem)",text:"¡▢ el favor!",a:["haz"]},
+  {cue:"hablar · tú (ordem negativa)",text:"¡No ▢ tan rápido!",a:["hables"]}
+ ]},
+{id:12,title:"Revisão geral",sub:"misturando tudo",
+ teach:`<h3>🎉 Você chegou ao fim!</h3>
+  <p>Agora vamos misturar tudo com frases reais. Leia a pista do tempo e conjugue.</p>
+  <p>Errou? Sem problema — leia a explicação e siga. Depois, use o <b>Treino livre</b> (em Consultar) com as 42 frases.</p>`,
+ drills:[
+  {cue:"decir · ellos · passado fechado",text:"Ayer ellos ▢ la verdad.",a:["dijeron"],why:"Irregular: raiz 'dij-' + '-eron'. 'Ayer' = passado fechado."},
+  {cue:"hacer · nosotros · Perfecto",text:"Esta semana ▢ mucho.",a:["hemos hecho"],why:"'Esta semana' (aberto) → Perfecto. Particípio 'hecho'."},
+  {cue:"saber · tú · subjuntivo",text:"Es importante que ▢ esto.",a:["sepas"],why:"'Es importante que' → subjuntivo. Raiz 'sep-'."},
+  {cue:"vivir · ella · cenário",text:"Cuando ▢ en León, era niña.",a:["vivía","vivia"],why:"Descrição/cenário no passado → imperfeito."},
+  {cue:"ir · vosotros · ordem negativa",text:"¡No ▢ por ahí!",a:["vayáis","vayais"],why:"Ordem negativa → subjuntivo de ir: 'vayáis'."},
+  {cue:"poner · yo · Perfecto",text:"Esta mañana ▢ las llaves aquí.",a:["he puesto"],why:"'Esta mañana' (aberto) → Perfecto. Particípio 'puesto'."}
+ ]}
 ];
 
-/* ============ CORRELAÇÕES: Ponte PT↔ES ============ */
-const PT_FREE=[
-  {es:"Pretérito Imperfecto",pt:"Pretérito Imperfeito",note:"Quase 1-a-1. Só troque a vogal do meio.",
-   pairs:[["hablaba","falava"],["comía","comia"],["vivía","vivia"],["era","era"],["iba","ia"]]},
-  {es:"Pretérito Indefinido",pt:"Pretérito Perfeito (simples)",note:"Estrutura idêntica; vários verbos batem direto.",
-   pairs:[["hablé","falei"],["comí","comi"],["dije","disse"],["tuve","tive"],["fui","fui"]]},
-  {es:"Presente de Subjuntivo",pt:"Presente do Subjuntivo",note:"A 'inversão de vogal' EXISTE no PT também! Mesmo mecanismo.",
-   pairs:[["que yo hable","que eu fale"],["que yo coma","que eu coma"],["que yo viva","que eu viva"],["que sea","que seja"]]},
-  {es:"Presente de Indicativo",pt:"Presente do Indicativo",note:"Base muito parecida — bom ponto de partida.",
-   pairs:[["hablo","falo"],["como","como"],["vivo","vivo"],["tengo","tenho"]]}
+/* ===================== 42 FRASES (treino livre) ===================== */
+const EX=[
+ {cue:"despertarse · yo · presente",text:"Cada mañana yo ▢ a las seis.",a:["me despierto"],why:"Reflexivo com ditongo e→ie."},
+ {cue:"decir · ellos · passado fechado",text:"Ayer ellos ▢ que no había fallos.",a:["dijeron"],why:"Raiz 'dij-' + '-eron'. 'Ayer' = fechado."},
+ {cue:"hacer · nosotros · Perfecto",text:"Esta semana ▢ un gran avance.",a:["hemos hecho"],why:"'Esta semana' aberto. Particípio 'hecho'."},
+ {cue:"ser · vosotros · imperfeito",text:"Cuando ▢ niños, no teníais que preocuparos.",a:["erais"],why:"Ser é irregular no imperfeito."},
+ {cue:"saber · tú · subjuntivo",text:"Es fundamental que ▢ usar IA.",a:["sepas"],why:"Juízo de valor → subjuntivo. Raiz 'sep-'."},
+ {cue:"venir · vosotros · ordem",text:"¡▢ aquí y mirad esto!",a:["venid"],why:"Infinitivo − r + d → venid."},
+ {cue:"abrir · ella · passado fechado",text:"El año pasado la empresa ▢ tres oficinas.",a:["abrió","abrio"],why:"Regular. 'El año pasado' = fechado."},
+ {cue:"poder · ellos · subjuntivo",text:"No creo que ▢ entregar hoy.",a:["puedan"],why:"'No creo que' = dúvida. Ditongo o→ue."},
+ {cue:"soler · nosotros · imperfeito",text:"Antes ▢ programar en código nativo.",a:["solíamos","soliamos"],why:"'Soler' indica hábito → imperfeito."},
+ {cue:"escribir · tú · Perfecto",text:"Hoy tú ▢ un correo importante.",a:["has escrito"],why:"'Hoy' aberto. Particípio 'escrito'."},
+ {cue:"estar · vosotros · presente",text:"Si ▢ listos, empezamos.",a:["estáis","estais"],why:"Presente de vosotros."},
+ {cue:"hacer · tú · ordem negativa",text:"¡No ▢ ruido!",a:["hagas"],why:"Ordem negativa → subjuntivo."},
+ {cue:"terminar · nosotros · subjuntivo",text:"En cuanto ▢ esto, lanzamos.",a:["terminemos"],why:"'En cuanto' (futuro) → subjuntivo."},
+ {cue:"viajar · ellos · presente (PEGADINHA)",text:"A lo mejor ▢ la semana que viene.",a:["viajan"],why:"'A lo mejor' usa indicativo, não subjuntivo."},
+ {cue:"probar · tú · Perfecto",text:"¿Alguna vez ▢ esto?",a:["has probado"],why:"'Alguna vez' = experiência → Perfecto."},
+ {cue:"maquetar · él · imperfeito",text:"Mientras él ▢, yo corregía.",a:["maquetaba"],why:"'Mientras' + fundo → imperfeito."},
+ {cue:"tener · yo · passado fechado",text:"Anteayer yo ▢ una reunión.",a:["tuve"],why:"Raiz 'tuv-'. Passado fechado."},
+ {cue:"poner · vosotros · subjuntivo",text:"Quiero que ▢ los archivos ahí.",a:["pongáis","pongais"],why:"'Quiero que' → subjuntivo. Raiz 'pong-'."},
+ {cue:"hacer · tú · ordem",text:"¡▢ el favor de enviar la factura!",a:["haz"],why:"Imperativo irregular de tú."},
+ {cue:"lograr · nosotros · Perfecto",text:"Este año ▢ crecer 90%.",a:["hemos logrado"],why:"'Este año' aberto → Perfecto."},
+ {cue:"vivir · ella · imperfeito",text:"Cuando ▢ en León, la red era mala.",a:["vivía","vivia"],why:"Cenário no passado → imperfeito."},
+ {cue:"conseguir · yo · passado fechado",text:"Ayer finalmente ▢ resolverlo.",a:["conseguí","consegui"],why:"-IR regular. 'Ayer' = fechado."},
+ {cue:"soportar · ella · subjuntivo",text:"No es evidente que ▢ tanto volumen.",a:["soporte"],why:"'No es evidente que' = dúvida → subjuntivo."},
+ {cue:"pensar · vosotros · presente",text:"¿A qué hora ▢ salir?",a:["pensáis","pensais"],why:"Vosotros não ditonga (não é 'piensáis')."},
+ {cue:"ir · vosotros · ordem negativa",text:"¡No ▢ por esa calle!",a:["vayáis","vayais"],why:"Negativo → subjuntivo de ir."},
+ {cue:"tener · vosotros · Perfecto",text:"Últimamente ▢ una conducta impecable.",a:["habéis tenido","habeis tenido"],why:"'Últimamente' aberto → Perfecto."},
+ {cue:"vender · ellos · passado fechado",text:"Hace cinco años ▢ su propiedad.",a:["vendieron"],why:"'Hace 5 años' = datado fechado."},
+ {cue:"ser · ele · subjuntivo",text:"Es una lástima que no ▢ suficiente.",a:["sea"],why:"'Es una lástima que' → subjuntivo."},
+ {cue:"ir · yo · presente (PEGADINHA)",text:"Siempre que ▢ a Madrid, visito museos.",a:["voy"],why:"'Siempre que' (hábito) → indicativo."},
+ {cue:"traer · vosotros · ordem",text:"¡▢ todos los documentos!",a:["traed"],why:"Infinitivo − r + d → traed."},
+ {cue:"contestar · tú · passado fechado",text:"El mes pasado no ▢ las notificaciones.",a:["contestaste"],why:"'El mes pasado' = fechado."},
+ {cue:"salir · tú · subjuntivo",text:"Antes de que ▢, apaga todo.",a:["salgas"],why:"'Antes de que' → subjuntivo. Raiz 'salg-'."},
+ {cue:"volver · ellos · Perfecto",text:"Todavía no ▢ de la conferencia.",a:["han vuelto"],why:"'Todavía no' → Perfecto. Particípio 'vuelto'."},
+ {cue:"estar · ella · imperfeito",text:"La oficina ▢ cerca de la estación.",a:["estaba"],why:"Descrição de lugar → imperfeito."},
+ {cue:"conocer · vosotros · presente",text:"¿▢ a los nuevos socios?",a:["conocéis","conoceis"],why:"Presente de vosotros."},
+ {cue:"decir · tú · ordem negativa",text:"¡No me ▢ que perdiste las claves!",a:["digas"],why:"Negativo → subjuntivo de decir."},
+ {cue:"llegar · vosotros · subjuntivo",text:"Cuando ▢ al aeropuerto, buscad el coche.",a:["lleguéis","llegueis"],why:"'Cuando' (futuro) → subjuntivo. g→gu."},
+ {cue:"caer · ella · passado fechado",text:"En 2024 la facturación ▢.",a:["cayó","cayo"],why:"'En 2024' fechado. i→y (cayó)."},
+ {cue:"entender · tú · subjuntivo",text:"Me sorprende que no ▢ la diferencia.",a:["entiendas"],why:"'Me sorprende que' → subjuntivo. e→ie."},
+ {cue:"pedir · tú · ordem",text:"¡▢ una copia del recibo!",a:["pide"],why:"Imperativo de tú; e→i (pide)."},
+ {cue:"poner · yo · Perfecto",text:"Esta mañana ▢ las carpetas ahí.",a:["he puesto"],why:"'Esta mañana' aberto. Particípio 'puesto'."},
+ {cue:"dormir · vosotros · imperfeito",text:"Mientras ▢, el sistema hacía backups.",a:["dormíais","dormiais"],why:"'Mientras' + fundo → imperfeito."}
 ];
-const PT_TRAP=[
-  {t:"Pretérito Perfecto Compuesto ≠ uso do PT brasileiro",
-   d:"Em PT-BR você diz <b>'hoje eu fiz'</b> (perfeito simples). Em ES o mesmo contexto exige o composto: <b>'hoy he hecho'</b>. Não traduza ao pé da letra — 'hoy hice' soa errado na Espanha."},
-  {t:"Auxiliar é HABER, nunca TER",
-   d:"PT usa 'ter': 'tenho feito'. ES usa <b>haber</b>: 'he hecho'. E em PT-BR 'tenho feito' significa hábito repetido — sentido diferente do composto espanhol. Cuidado com o falso amigo."},
-  {t:"Vosotros não existe no seu PT",
-   d:"O 'vós' brasileiro morreu, então a 2ª pessoa do plural (habláis, sois, tenéis) não tem correspondente vivo. É a forma que você terá que construir conscientemente — não vem de graça."},
-  {t:"Ditongação que o PT não faz",
-   d:"ES p<b>ue</b>do, p<b>ie</b>nso, qu<b>ie</b>ro mudam a raiz na tônica. O PT 'posso/penso/quero' muda de outro jeito — não confie no automático: o padrão da quebra é diferente."}
-];
-let curPtTab="free";
-function ptTab(k){curPtTab=k;
-  document.getElementById("pt-free").classList.toggle("on",k==="free");
-  document.getElementById("pt-trap").classList.toggle("on",k==="trap");
-  renderPt();}
-function renderPt(){
-  const out=document.getElementById("pt-out");
-  if(curPtTab==="free"){
-    let h="";
-    PT_FREE.forEach(b=>{
-      h+=`<div class="insight" style="margin:8px 0"><b>${b.es}</b> ≈ ${b.pt} — ${b.note}<table style="margin-top:8px">
-        <tr><th>🇪🇸 Español</th><th>🇧🇷 Português</th></tr>`;
-      b.pairs.forEach(p=>h+=`<tr><td><span class="end">${p[0]}</span></td><td>${p[1]}</td></tr>`);
-      h+=`</table></div>`;
-    });
-    out.innerHTML=h;
-  } else {
-    out.innerHTML=PT_TRAP.map(t=>`<div class="trap" style="margin:8px 0"><b>⚠️ ${t.t}</b><br>${t.d}</div>`).join("");
+
+/* ===================== HELPERS ===================== */
+const NORM=s=>s.toLowerCase().trim().replace(/\s+/g," ");
+const STRIP=s=>NORM(s).normalize("NFD").replace(/[̀-ͯ]/g,"");
+function matchAns(guess,arr){
+  const g=NORM(guess), gs=STRIP(guess);
+  for(const a of arr){ if(g===NORM(a))return"exact"; }
+  for(const a of arr){ if(gs===STRIP(a))return"loose"; }
+  return"no";
+}
+const SAVE="esp_passo_v1";
+let state={done:[]};
+try{const s=JSON.parse(localStorage.getItem(SAVE));if(s&&Array.isArray(s.done))state=s;}catch(e){}
+function save(){localStorage.setItem(SAVE,JSON.stringify(state));}
+
+/* ===================== NAV ===================== */
+document.querySelectorAll("nav button").forEach(b=>b.onclick=()=>{
+  document.querySelectorAll("nav button").forEach(x=>x.classList.remove("active"));
+  document.querySelectorAll(".view").forEach(v=>v.classList.remove("active"));
+  b.classList.add("active");document.getElementById(b.dataset.v).classList.add("active");
+  if(b.dataset.v==="aprender")renderTrilha();
+});
+
+/* ===================== TRILHA ===================== */
+function isUnlocked(i){return i===0||state.done.includes(LESSONS[i-1].id);}
+function renderTrilha(){
+  document.getElementById("licao").style.display="none";
+  const host=document.getElementById("trilha");host.style.display="block";
+  const pct=Math.round(state.done.length/LESSONS.length*100);
+  let h=`<h2>Sua trilha</h2><p class="sub">${state.done.length} de ${LESSONS.length} lições concluídas.</p>
+    <div class="topbar"><div class="bar"><div style="width:${pct}%"></div></div><span class="pct">${pct}%</span></div>`;
+  LESSONS.forEach((l,i)=>{
+    const done=state.done.includes(l.id), unlocked=isUnlocked(i);
+    const cls=done?"done":(unlocked?"avail":"locked");
+    const icon=done?"✓":(unlocked?l.id:"🔒");
+    const status=done?"Concluída · toque para revisar":(unlocked?"Disponível":"Conclua a anterior");
+    h+=`<div class="lesson ${cls}" data-i="${i}"><div class="num">${icon}</div>
+      <div><div class="t">${l.title}</div><div class="s">${l.sub} · ${status}</div></div></div>`;
+  });
+  host.innerHTML=h;
+  host.querySelectorAll(".lesson").forEach(el=>{
+    const i=+el.dataset.i;
+    if(isUnlocked(i))el.onclick=()=>openLesson(i);
+  });
+}
+
+/* ===================== LIÇÃO + DRILL ENGINE ===================== */
+function openLesson(i){
+  const l=LESSONS[i];
+  document.getElementById("trilha").style.display="none";
+  const host=document.getElementById("licao");host.style.display="block";
+  host.innerHTML=`<button class="back" onclick="renderTrilha()">← Voltar à trilha</button>
+    <div class="crumb">Lição ${l.id} de ${LESSONS.length}</div>
+    <div class="teach">${l.teach}</div>
+    <button class="btn" id="start-drills">Começar exercícios →</button>`;
+  document.getElementById("start-drills").onclick=()=>runSession(l.drills,host,()=>{
+    if(!state.done.includes(l.id)){state.done.push(l.id);save();}
+    finishLesson(host,i);
+  });
+}
+function finishLesson(host,i){
+  const next=i+1<LESSONS.length?i+1:null;
+  host.innerHTML=`<div class="drill done-screen"><div class="big">🎉</div>
+    <h3>Lição concluída!</h3><p class="sub">Mandou bem. ${next!==null?"Pronto para a próxima?":"Você terminou a trilha inteira!"}</p>
+    ${next!==null?`<button class="btn" id="go-next">Próxima lição →</button>`:""}
+    <button class="btn ghost" onclick="renderTrilha()">Voltar à trilha</button></div>`;
+  if(next!==null)document.getElementById("go-next").onclick=()=>openLesson(next);
+}
+/* generic session: list of {cue,text,a,why}; calls onDone when finished */
+function runSession(drills,host,onDone){
+  let i=0,answered=false;
+  const card=document.createElement("div");card.className="drill";host.innerHTML="";host.appendChild(card);
+  function render(){
+    answered=false;
+    const d=drills[i];
+    const textHtml=d.text?d.text.replace("▢",'<span class="blank">?</span>'):'<span style="color:var(--muted)">Conjugue:</span>';
+    card.innerHTML=`<div class="count">Exercício ${i+1} de ${drills.length}</div>
+      <span class="cue">${d.cue}</span>
+      <div class="text">${textHtml}</div>
+      <input id="d-in" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="digite aqui…">
+      <button class="btn" id="d-btn">Verificar</button>
+      <div class="fb" id="d-fb"></div>`;
+    const inp=card.querySelector("#d-in"),btn=card.querySelector("#d-btn"),fb=card.querySelector("#d-fb");
+    inp.focus();
+    function check(){
+      if(answered){next();return;}
+      if(!inp.value.trim()){inp.focus();return;}
+      answered=true;inp.disabled=true;
+      const m=matchAns(inp.value,d.a);
+      if(m==="exact"){
+        fb.className="fb ok";fb.innerHTML=`<div class="ans">✓ Correto!</div>${d.why?`<div class="why">${d.why}</div>`:""}`;
+      }else if(m==="loose"){
+        fb.className="fb ok";fb.innerHTML=`<div class="ans">✓ Quase perfeito</div><div class="why">A forma está certa, só confira o acento: <b>${d.a[0]}</b>.</div>${d.why?`<div class="why">${d.why}</div>`:""}`;
+      }else{
+        fb.className="fb bad";fb.innerHTML=`<div class="ans">A resposta é: ${d.a[0]}</div>${d.why?`<div class="why">${d.why}</div>`:'<div class="why">Tente memorizar e siga em frente.</div>'}`;
+      }
+      btn.textContent=(i+1<drills.length)?"Próximo →":"Concluir ✓";
+    }
+    function next(){ i++; if(i<drills.length)render(); else onDone(); }
+    btn.onclick=check;
+    inp.addEventListener("keydown",e=>{if(e.key==="Enter")check();});
   }
+  render();
 }
-window.ptTab=ptTab; renderPt();
+window.renderTrilha=renderTrilha;window.openLesson=openLesson;
 
-/* ============ CORRELAÇÕES: Pares mínimos ============ */
-const PAIRS=[
-  {a:"comemos",b:"comimos",dim:"o TEMPO (só a vogal muda)",mean:"comemos = presente · comimos = passado (indefinido)"},
-  {a:"hablo",b:"habló",dim:"o ACENTO = a pessoa + o tempo",mean:"hablo = eu, agora · habló = ele, no passado"},
-  {a:"hable",b:"hablé",dim:"o ACENTO = o MODO",mean:"hable = subjuntivo (que eu fale) · hablé = indefinido (eu falei)"},
-  {a:"pienso",b:"pensamos",dim:"o DITONGO aparece/some pela tônica",mean:"tônica na raiz → pienso · átona → pensamos (nunca 'piensamos')"},
-  {a:"tengo",b:"tenga",dim:"o MODO (indicativo → subjuntivo: o→a)",mean:"tengo = fato (eu tenho) · tenga = desejo/dúvida (que eu tenha)"},
-  {a:"vivía",b:"viví",dim:"o ASPECTO do passado",mean:"vivía = morava (cenário) · viví = morei (fechado)"},
-  {a:"digo",b:"dije",dim:"a RAIZ inteira (presente vs passado)",mean:"digo = digo agora · dije = eu disse"},
-  {a:"estás",b:"estáis",dim:"o NÚMERO (tú → vosotros)",mean:"estás = você · estáis = vocês"},
-  {a:"sea",b:"sé",dim:"o MODO (subjuntivo vs imperativo)",mean:"que sea = que seja · ¡sé! = sê! (ordem)"}
-];
-document.getElementById("pairs-out").innerHTML=PAIRS.map(p=>
-  `<div class="formrow" style="flex-wrap:wrap"><span class="big">
-    <span class="end">${p.a}</span> <span style="color:var(--muted)">vs</span> <span class="end">${p.b}</span></span>
-    <span class="who" style="text-align:right">muda: <b style="color:var(--accent2)">${p.dim}</b></span>
-    <div class="legend" style="width:100%;margin:4px 0 0">${p.mean}</div></div>`).join("");
-
-/* ============ CORRELAÇÕES: Famílias por mecanismo ============ */
-const FAMS={
-  "-go (eu)":{rule:"A 1ª pessoa termina em -GO. Essa forma vira a RAIZ de todo o subjuntivo e do imperativo negativo.",
-    members:[["tener","tengo","tenga"],["hacer","hago","haga"],["decir","digo","diga"],["poner","pongo","ponga"],["salir","salgo","salga"],["venir","vengo","venga"]],
-    head:["Verbo","yo (presente)","subjuntivo"],
-    tell:"Achou o -go? Então o subjuntivo inteiro sai dele. Aprende 1, ganha o resto."},
-  "ditongo e→ie":{rule:"Na sílaba TÔNICA, o 'e' da raiz vira 'ie'. Em nós/vós (átona) NÃO ditonga.",
-    members:[["pensar","pienso","pensamos"],["entender","entiendo","entendemos"],["querer","quiero","queremos"],["venir","vengo/viene","venimos"]],
-    head:["Verbo","tônico (ie)","átono (sem ie)"],
-    tell:"O ditongo é um 'sino' da tônica: se a sílaba é forte, ele toca; se não, some."},
-  "ditongo o→ue":{rule:"Na sílaba TÔNICA, o 'o' da raiz vira 'ue'. Mesmo gatilho do e→ie.",
-    members:[["poder","puedo","podemos"],["volver","vuelvo","volvemos"],["dormir","duermo","dormimos"],["soler","suelo","solemos"]],
-    head:["Verbo","tônico (ue)","átono (sem ue)"],
-    tell:"Mesmo mecanismo do e→ie, outra vogal. Reconheça o movimento, não o verbo."},
-  "e→i (3ª conj.)":{rule:"Verbos -IR cujo 'e' da raiz vira 'i' (não ditonga). Inclui o imperativo afirmativo de tú.",
-    members:[["pedir","pido","pide"],["conseguir","consigo","consigue"],["decir","digo","di"]],
-    head:["Verbo","yo / raiz","tú (imperativo)"],
-    tell:"Aqui o 'e' aperta para 'i' em vez de abrir em ditongo. Padrão típico do -IR."}
-};
-let curFam=Object.keys(FAMS)[0];
-const famPills=document.getElementById("fam-pills"), famOut=document.getElementById("fam-out");
-Object.keys(FAMS).forEach(k=>{
-  const s=document.createElement("span");s.className="pill"+(k===curFam?" on":"");s.textContent=k;
-  s.onclick=()=>{curFam=k;document.querySelectorAll("#fam-pills .pill").forEach(p=>p.classList.toggle("on",p.textContent===k));renderFam();};
-  famPills.appendChild(s);
-});
-function renderFam(){
-  const f=FAMS[curFam];
-  let h=`<div class="insight" style="margin-top:0">📐 ${f.rule}</div><table><tr>`;
-  f.head.forEach(x=>h+=`<th>${x}</th>`); h+=`</tr>`;
-  f.members.forEach(m=>{ h+=`<tr><td><b>${m[0]}</b></td><td><span class="end">${m[1]}</span></td><td><span class="end">${m[2]}</span></td></tr>`; });
-  h+=`</table><div class="legend">🎯 ${f.tell}</div>`;
-  famOut.innerHTML=h;
-}
-renderFam();
-
-/* ============ NAVEGAÇÃO ============ */
-document.querySelectorAll("nav button").forEach(btn=>{
-  btn.onclick=()=>{
-    document.querySelectorAll("nav button").forEach(b=>b.classList.remove("active"));
-    document.querySelectorAll(".view").forEach(v=>v.classList.remove("active"));
-    btn.classList.add("active");
-    document.getElementById(btn.dataset.v).classList.add("active");
-  };
+/* ===================== CONSULTAR ===================== */
+document.querySelectorAll(".subnav button").forEach(b=>b.onclick=()=>{
+  document.querySelectorAll(".subnav button").forEach(x=>x.classList.remove("on"));
+  document.querySelectorAll(".csub").forEach(s=>s.classList.remove("on"));
+  b.classList.add("on");document.getElementById("c-"+b.dataset.c).classList.add("on");
 });
 
-/* ============ MOTOR: construtor regular ============ */
-const bVerb=document.getElementById("b-verb"), bTense=document.getElementById("b-tense"), bOut=document.getElementById("b-out");
+/* builder */
+const bVerb=document.getElementById("b-verb"),bTense=document.getElementById("b-tense"),bOut=document.getElementById("b-out");
 Object.keys(REG).forEach(v=>{const o=document.createElement("option");o.value=v;o.textContent=v+" ("+REG[v].type+")";bVerb.appendChild(o);});
 Object.keys(ENDINGS).forEach(t=>{const o=document.createElement("option");o.value=t;o.textContent=t;bTense.appendChild(o);});
 function renderBuilder(){
-  const v=bVerb.value, t=bTense.value, info=REG[v], ends=ENDINGS[t][info.type];
-  let h=`<div class="legend"><span class="stem">raiz</span> + <span class="end">desinência (${info.type}, ${t})</span></div>`;
-  ends.forEach((e,i)=>{
-    h+=`<div class="formrow"><span class="who">${PERSONS[i]}</span>
-      <span class="big"><span class="stem">${info.stem}</span><span class="end">${e}</span></span></div>`;
-  });
-  h+=`<div class="insight" style="margin-top:12px">💡 ${ENDINGS[t].note}</div>`;
+  const v=bVerb.value,t=bTense.value,info=REG[v],ends=ENDINGS[t][info.type];
+  let h=`<div class="legend"><span class="stem">parte fixa</span> + <span class="end">terminação</span></div>`;
+  ends.forEach((e,i)=>h+=`<div class="formrow"><span class="who">${PERSONS[i]}</span><span style="font-size:17px"><span class="stem">${info.stem}</span><span class="end">${e}</span></span></div>`);
+  h+=`<div class="insight" style="margin-top:10px">💡 ${ENDINGS[t].note}</div>`;
   bOut.innerHTML=h;
 }
-bVerb.onchange=bTense.onchange=renderBuilder; renderBuilder();
+bVerb.onchange=bTense.onchange=renderBuilder;renderBuilder();
 
-/* ============ MOTOR: verbos irregulares ============ */
-const motorPills=document.getElementById("motor-pills"), motorOut=document.getElementById("motor-out");
-let curMotor="TENER";
-Object.keys(MOTOR).forEach(v=>{
-  const s=document.createElement("span");s.className="pill"+(v===curMotor?" on":"");s.textContent=v;
-  s.onclick=()=>{curMotor=v;document.querySelectorAll("#motor-pills .pill").forEach(p=>p.classList.toggle("on",p.textContent===v));renderMotor();};
-  motorPills.appendChild(s);
-});
+/* motor */
+const motorPills=document.getElementById("motor-pills"),motorOut=document.getElementById("motor-out");
+let curM="TENER";
+Object.keys(MOTOR).forEach(v=>{const s=document.createElement("span");s.className="pill"+(v===curM?" on":"");s.textContent=v;
+  s.onclick=()=>{curM=v;document.querySelectorAll("#motor-pills .pill").forEach(p=>p.classList.toggle("on",p.textContent===v));renderMotor();};motorPills.appendChild(s);});
 function renderMotor(){
-  const m=MOTOR[curMotor];
-  let h=`<table><tr><th>Pessoa</th><th>Presente Ind.</th><th>Pret. Indefinido</th><th>Pres. Subjuntivo</th></tr>`;
-  PERSONS.forEach((p,i)=>{
-    h+=`<tr><td class="who">${p}</td><td>${m["Presente de Indicativo"][i]}</td><td>${m["Pretérito Indefinido"][i]}</td><td>${m["Presente de Subjuntivo"][i]}</td></tr>`;
-  });
-  h+=`</table><div class="legend">Imperativo afirmativo (tú / vosotros): <b style="color:var(--end)">${m.imp}</b></div>`;
+  const m=MOTOR[curM];let h="";
+  PERSONS.forEach((p,i)=>h+=`<div class="formrow"><span class="who">${p}</span><span style="font-size:16px">${m.p[i]}</span></div>`);
+  h+=`<div class="legend" style="margin-top:8px">Ordem (tú / vosotros): <b style="color:#5eead4">${m.imp}</b></div>`;
   motorOut.innerHTML=h;
 }
 renderMotor();
 
-/* ============ LÓGICA: árvore de decisão ============ */
+/* tree */
 const TREE={
-  start:{q:"A frase é uma ORDEM / comando (imperativo)?",
-    opts:[{t:"Sim, é uma ordem",go:"order"},{t:"Não, é uma afirmação/pergunta normal",go:"que"}]},
-  order:{q:"A ordem é afirmativa ou negativa?",
-    opts:[{t:"Negativa (tem 'no')",r:"impN"},{t:"Afirmativa — para TÚ",r:"impTu"},{t:"Afirmativa — para VOSOTROS",r:"impVos"}]},
-  que:{q:"Há um disparador de subjuntivo? (juízo/emoção/dúvida + 'que', 'antes de que', ou 'cuando/en cuanto' apontando p/ futuro)",
-    opts:[{t:"Sim, tem um desses disparadores",go:"trap"},{t:"Não há disparador de subjuntivo",go:"time"}]},
-  trap:{q:"Atenção às pegadinhas: a frase usa 'A lo mejor' OU 'siempre que/cuando' como hábito?",
-    opts:[{t:"Sim, é 'A lo mejor' ou hábito",r:"presTrap"},{t:"Não, é disparador real",r:"subj"}]},
-  time:{q:"Em que tempo a ação acontece?",
-    opts:[{t:"Presente / verdade geral",r:"pres"},{t:"Passado",go:"past"}]},
-  past:{q:"Que tipo de passado?",
-    opts:[{t:"Ainda no período atual (hoy, esta semana, este año, todavía no, alguna vez)",r:"ppc"},
-          {t:"Ponto fechado/datado (ayer, el mes pasado, hace X años, en 2024)",r:"indef"},
-          {t:"Cenário, hábito, descrição ('mientras', 'cuando era')",r:"imperf"}]}
+  start:{q:"A frase é uma ORDEM?",opts:[{t:"Sim, é ordem",go:"order"},{t:"Não, frase normal",go:"que"}]},
+  order:{q:"A ordem é afirmativa ou negativa?",opts:[{t:"Negativa (tem 'no')",r:"impN"},{t:"Afirmativa p/ TÚ",r:"impTu"},{t:"Afirmativa p/ VOSOTROS",r:"impVos"}]},
+  que:{q:"Tem 'que' de desejo/dúvida/emoção, 'antes de que', ou 'cuando' (futuro)?",opts:[{t:"Sim",go:"trap"},{t:"Não",go:"time"}]},
+  trap:{q:"É 'A lo mejor' OU 'siempre que/cuando' (hábito)?",opts:[{t:"Sim",r:"presTrap"},{t:"Não",r:"subj"}]},
+  time:{q:"Quando acontece?",opts:[{t:"Presente / geral",r:"pres"},{t:"Passado",go:"past"}]},
+  past:{q:"Que passado?",opts:[{t:"Ainda no período (hoy, esta semana, todavía)",r:"ppc"},{t:"Fechado/datado (ayer, en 2024)",r:"indef"},{t:"Cenário/hábito (mientras, cuando era)",r:"imperf"}]}
 };
-const RESULTS={
-  impN:{title:"Imperativo Negativo",d:"Use a forma do <b>Presente de Subjuntivo</b>.",ex:"No <b>hagas</b> ruido · No <b>vayáis</b> · No <b>digas</b>"},
-  impTu:{title:"Imperativo Afirmativo (tú)",d:"Geralmente = 3ª pessoa do indicativo. Cuidado com irregulares curtos.",ex:"Irregulares: <b>haz, di, ve, ten, pon, sal, pide</b>"},
-  impVos:{title:"Imperativo Afirmativo (vosotros)",d:"Regra infalível: infinitivo <b>− r + d</b>.",ex:"venir→<b>venid</b> · traer→<b>traed</b> · hablar→<b>hablad</b>"},
-  subj:{title:"Presente de Subjuntivo",d:"O disparador força o modo subjuntivo.",ex:"Es fundamental que <b>sepas</b> · Antes de que <b>salgas</b> · En cuanto <b>terminemos</b>"},
-  presTrap:{title:"Presente de Indicativo (pegadinha!)",d:"'A lo mejor' e hábitos com 'siempre que/cuando' usam INDICATIVO, não subjuntivo.",ex:"A lo mejor <b>viajan</b> · Siempre que <b>voy</b> a Madrid"},
-  pres:{title:"Presente de Indicativo",d:"Ação no presente ou verdade geral.",ex:"Cada mañana me <b>despierto</b> · ¿Vosotros <b>conocéis</b>…?"},
-  ppc:{title:"Pretérito Perfecto Compuesto",d:"haber no presente (he/has/ha/hemos/habéis/han) + particípio.",ex:"Hoy <b>has escrito</b> · Este año <b>hemos logrado</b>"},
-  indef:{title:"Pretérito Indefinido",d:"Ação pontual e fechada no passado.",ex:"Ayer <b>dijeron</b> · Hace 5 años <b>vendieron</b>"},
-  imperf:{title:"Pretérito Imperfecto",d:"Cenário, hábito ou descrição durativa no passado.",ex:"Cuando <b>erais</b> niños · Mientras <b>dormíais</b>"}
-};
+const RES={impN:["Ordem negativa","Use o subjuntivo: no hables, no vayáis"],impTu:["Ordem afirmativa (tú)","Geralmente = 'ele' no presente. Curtos: haz, di, ven, ten"],
+  impVos:["Ordem afirmativa (vosotros)","Infinitivo − r + d: hablad, venid"],subj:["Subjuntivo","hable, coma, salgas, terminemos"],
+  presTrap:["Presente (pegadinha!)","'A lo mejor' e hábitos usam indicativo: viajan, voy"],pres:["Presente","hablo, conocéis"],
+  ppc:["Passado de 'hoje' (Perfecto)","he hablado, han vuelto"],indef:["Passado fechado","dijeron, vendieron"],imperf:["Passado cenário","vivía, dormíais"]};
 let crumbs=[];
-function renderTree(nodeKey){
-  const node=TREE[nodeKey], box=document.getElementById("tree-node");
-  document.getElementById("crumbs").innerHTML=crumbs.length?("Caminho: "+crumbs.map(c=>`<span>${c}</span>`).join(" → ")):"Responda para descer a árvore ↓";
-  let h=`<div class="tree-q">${node.q}</div>`;
-  node.opts.forEach((o,i)=>{ h+=`<button class="tree-opt" data-i="${i}">${o.t}</button>`; });
-  box.innerHTML=h;
-  box.querySelectorAll(".tree-opt").forEach(btn=>{
-    btn.onclick=()=>{
-      const o=node.opts[btn.dataset.i]; crumbs.push(o.t.length>34?o.t.slice(0,32)+"…":o.t);
-      if(o.r){ showResult(o.r); } else { renderTree(o.go); }
-    };
+function renderTree(k){
+  const n=TREE[k];document.getElementById("crumbs").textContent=crumbs.length?("Caminho: "+crumbs.join(" → ")):"Responda para descer ↓";
+  let h=`<div style="font-size:16px;font-weight:700;margin-bottom:10px">${n.q}</div>`;
+  n.opts.forEach((o,i)=>h+=`<button class="tree-opt" data-i="${i}">${o.t}</button>`);
+  document.getElementById("tree-node").innerHTML=h;
+  document.querySelectorAll("#tree-node .tree-opt").forEach(b=>b.onclick=()=>{
+    const o=n.opts[b.dataset.i];crumbs.push(o.t.length>26?o.t.slice(0,24)+"…":o.t);
+    if(o.r){const r=RES[o.r];document.getElementById("crumbs").textContent="Caminho: "+crumbs.join(" → ");
+      document.getElementById("tree-node").innerHTML=`<div class="tree-res"><h4>✅ ${r[0]}</h4><div class="legend" style="font-size:14px">Ex.: ${r[1]}</div></div>`;}
+    else renderTree(o.go);
   });
-}
-function showResult(rk){
-  const r=RESULTS[rk];
-  document.getElementById("crumbs").innerHTML="Caminho: "+crumbs.map(c=>`<span>${c}</span>`).join(" → ");
-  document.getElementById("tree-node").innerHTML=
-    `<div class="tree-result"><h3>✅ ${r.title}</h3><p style="margin:0 0 8px">${r.d}</p>
-     <div class="legend" style="font-size:13.5px">Ex.: ${r.ex}</div></div>`;
 }
 function resetTree(){crumbs=[];renderTree("start");}
-resetTree();
+window.resetTree=resetTree;resetTree();
 
-/* ============ PRÁTICA ============ */
-const NORM=s=>s.toLowerCase().trim().replace(/\s+/g," ");
-const STRIP=s=>NORM(s).normalize("NFD").replace(/[̀-ͯ]/g,"");
-const CATS=[
-  {k:"all",label:"Todos (42)"},{k:"pres",label:"Presente Ind."},{k:"indef",label:"Indefinido"},
-  {k:"imperf",label:"Imperfecto"},{k:"ppc",label:"Perfecto Comp."},{k:"subj",label:"Subjuntivo"},
-  {k:"impA",label:"Imperat. Afirm."},{k:"impN",label:"Imperat. Neg."}
-];
-let filterKey="all", pool=[], qi=0, score={ok:0,bad:0};
-const SAVE_KEY="esp_core_trainer_v1";
-function loadSave(){try{const s=JSON.parse(localStorage.getItem(SAVE_KEY));if(s){score=s.score||score;}}catch(e){}}
-function persist(){localStorage.setItem(SAVE_KEY,JSON.stringify({score}));}
-loadSave();
-
-const filtersEl=document.getElementById("filters");
-CATS.forEach(c=>{
-  const s=document.createElement("span");s.className="pill"+(c.k===filterKey?" on":"");s.textContent=c.label;
-  s.onclick=()=>{filterKey=c.k;document.querySelectorAll("#filters .pill").forEach((p,idx)=>p.classList.toggle("on",CATS[idx].k===c.k));buildPool();};
-  filtersEl.appendChild(s);
-});
-function buildPool(){
-  pool=EX.map((e,i)=>({...e,idx:i})).filter(e=>filterKey==="all"||e.cat===filterKey);
-  qi=0; renderQ();
+/* correl */
+const PT_FREE=[["Imperfeito ≈ idêntico","hablaba≈falava · comía≈comia · vivía≈vivia · era≈era"],
+  ["Passado fechado ≈ perfeito simples","hablé≈falei · dije≈disse · tuve≈tive · fui≈fui"],
+  ["Subjuntivo: a vogal inverte igual no PT","que hable≈que fale · que coma≈que coma"],
+  ["Presente: base parecida","hablo≈falo · vivo≈vivo · tengo≈tenho"]];
+const PT_TRAP=[["Passado de 'hoje'","PT: 'hoje eu fiz'. ES: 'hoy he hecho'. Não use o passado fechado com 'hoy'."],
+  ["Auxiliar é HABER, nunca TER","ES: 'he hecho'. E o PT 'tenho feito' tem outro sentido (hábito)."],
+  ["Vosotros não existe no seu PT","habláis, tenéis, sois — você terá que construir do zero."],
+  ["Ditongo que o PT não faz igual","puedo, pienso, quiero mudam a raiz. Não confie no automático."]];
+let ptT="free";
+function ptTab(k){ptT=k;document.getElementById("pt-free").classList.toggle("on",k==="free");document.getElementById("pt-trap").classList.toggle("on",k==="trap");renderPt();}
+function renderPt(){
+  const out=document.getElementById("pt-out");
+  if(ptT==="free")out.innerHTML=PT_FREE.map(x=>`<div class="insight"><b>${x[0]}</b><br>${x[1]}</div>`).join("");
+  else out.innerHTML=PT_TRAP.map(x=>`<div class="insight" style="border-left-color:var(--warn)"><b style="color:var(--warn)">⚠️ ${x[0]}</b><br>${x[1]}</div>`).join("");
 }
-const elCue=document.getElementById("ex-cue"),elSent=document.getElementById("ex-sentence"),
-  elChoice=document.getElementById("ex-choice"),elInput=document.getElementById("ex-input"),
-  elFb=document.getElementById("ex-fb"),elNextRow=document.getElementById("ex-next-row");
-let chosenTense=null, answered=false;
+window.ptTab=ptTab;renderPt();
 
-function renderQ(){
-  answered=false; chosenTense=null;
-  document.getElementById("q-total").textContent=pool.length;
-  document.getElementById("q-idx").textContent=Math.min(qi+1,pool.length);
-  document.getElementById("q-ok").textContent=score.ok;
-  document.getElementById("q-bad").textContent=score.bad;
-  document.getElementById("progbar").style.width=(pool.length?(qi/pool.length*100):0)+"%";
-  elFb.className="feedback"; elFb.style.display="none"; elNextRow.style.display="none";
-  elInput.value=""; elInput.disabled=false;
-  if(qi>=pool.length){
-    elCue.textContent=""; elSent.innerHTML=`<b>🎉 Fim deste bloco!</b> Acertos: ${score.ok} · Erros: ${score.bad}. Troque o filtro ou reinicie.`;
-    elChoice.innerHTML=""; elInput.disabled=true; return;
-  }
-  const e=pool[qi];
-  elCue.innerHTML=`Verbo: <b>${e.v}</b> · pessoa: <b>${e.p}</b>`;
-  elSent.innerHTML=`${e.b} <span class="blank">?</span>${e.a}`;
-  // choices = unique tenses, shuffled deterministically by index
-  const set=[...new Set(EX.map(x=>x.t))];
-  const opts=shuffle(set, e.idx).slice(0,4);
-  if(!opts.includes(e.t)){opts[0]=e.t;}
-  elChoice.innerHTML="";
-  shuffle(opts,e.idx+7).forEach(t=>{
-    const b=document.createElement("button");b.textContent=t;
-    b.onclick=()=>{ if(answered)return; chosenTense=t;
-      document.querySelectorAll("#ex-choice button").forEach(x=>x.classList.remove("sel"));b.classList.add("sel"); };
-    elChoice.appendChild(b);
+const FAMS={"-go no 'yo'":["A 1ª pessoa termina em -go, e essa forma vira o subjuntivo inteiro.",[["tener","tengo→tenga"],["hacer","hago→haga"],["decir","digo→diga"],["poner","pongo→ponga"],["salir","salgo→salga"]]],
+  "ditongo e→ie":["Na sílaba forte, o 'e' vira 'ie'. Em nós/vós não muda.",[["pensar","pienso / pensamos"],["entender","entiendo / entendemos"],["querer","quiero / queremos"]]],
+  "ditongo o→ue":["Na sílaba forte, o 'o' vira 'ue'.",[["poder","puedo / podemos"],["volver","vuelvo / volvemos"],["dormir","duermo / dormimos"]]],
+  "e→i (verbos -IR)":["O 'e' aperta para 'i'.",[["pedir","pido / pide"],["conseguir","consigo"],["decir","digo / di"]]]};
+let curF=Object.keys(FAMS)[0];
+const famPills=document.getElementById("fam-pills"),famOut=document.getElementById("fam-out");
+Object.keys(FAMS).forEach(k=>{const s=document.createElement("span");s.className="pill"+(k===curF?" on":"");s.textContent=k;
+  s.onclick=()=>{curF=k;document.querySelectorAll("#fam-pills .pill").forEach(p=>p.classList.toggle("on",p.textContent===k));renderFam();};famPills.appendChild(s);});
+function renderFam(){
+  const f=FAMS[curF];let h=`<div class="insight" style="margin-top:0">📐 ${f[0]}</div>`;
+  f[1].forEach(m=>h+=`<div class="formrow"><span class="who">${m[0]}</span><span class="end">${m[1]}</span></div>`);
+  famOut.innerHTML=h;
+}
+renderFam();
+
+/* treino livre: shuffle 42 and run as session */
+function shuffle(a,seed){a=a.slice();let s=seed;for(let i=a.length-1;i>0;i--){s=(s*9301+49297)%233280;const j=Math.floor(s/233280*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function startFree(){
+  const host=document.getElementById("free-host");
+  const list=shuffle(EX, EX.length*7+3);
+  runSession(list,host,()=>{
+    host.innerHTML=`<div class="done-screen"><div class="big">🏁</div><h3>Você passou pelas 42!</h3>
+      <button class="btn" onclick="startFree()">Recomeçar</button></div>`;
   });
-  elInput.focus();
 }
-function shuffle(arr,seed){ // deterministic
-  const a=arr.slice(); let s=seed||1;
-  for(let i=a.length-1;i>0;i--){ s=(s*9301+49297)%233280; const j=Math.floor(s/233280*(i+1)); [a[i],a[j]]=[a[j],a[i]]; }
-  return a;
-}
-function check(){
-  if(answered)return; if(qi>=pool.length)return;
-  const e=pool[qi], guess=elInput.value;
-  if(!guess.trim()){elInput.focus();return;}
-  answered=true; elInput.disabled=true;
-  const tenseOK = chosenTense===e.t;
-  // mark choice buttons
-  document.querySelectorAll("#ex-choice button").forEach(b=>{
-    if(b.textContent===e.t)b.classList.add("correct");
-    else if(b.textContent===chosenTense)b.classList.add("wrong");
-  });
-  const exact = NORM(guess)===NORM(e.ans);
-  const loose = STRIP(guess)===STRIP(e.ans);
-  let cls,msg;
-  if(exact && tenseOK){cls="ok";msg="✅ Perfeito! Forma e tempo corretos.";score.ok++;}
-  else if(exact && !tenseOK){cls="warn";msg="⚠️ Conjugação certa, mas você marcou o tempo errado no Passo 1. Reveja a lógica.";score.ok++;}
-  else if(loose){cls="warn";msg="⚠️ Quase! A forma está certa, mas confira o acento/grafia.";score.ok++;}
-  else {cls="bad";msg="❌ Não foi dessa vez.";score.bad++;}
-  elFb.className="feedback "+cls;
-  elFb.innerHTML=`<div>${msg}</div>
-    <div class="ans" style="margin-top:6px">Resposta: <span style="color:var(--ok)">${e.ans}</span></div>
-    <div class="why">🔧 ${e.why}</div>
-    ${e.c?`<div class="why" style="margin-top:8px;padding-top:8px;border-top:1px dashed #3a4a63">⚖️ <b>Contraste:</b> ${e.c}</div>`:""}
-    <div class="rule">Tempo correto: <b>${e.t}</b></div>`;
-  document.getElementById("q-ok").textContent=score.ok;
-  document.getElementById("q-bad").textContent=score.bad;
-  elNextRow.style.display="flex";
-  persist();
-}
-document.getElementById("ex-check").onclick=check;
-elInput.addEventListener("keydown",ev=>{if(ev.key==="Enter"){ if(!answered)check(); else {qi++;renderQ();} }});
-document.getElementById("ex-next").onclick=()=>{qi++;renderQ();};
-document.getElementById("ex-skip").onclick=()=>{qi++;renderQ();};
-function resetPractice(){score={ok:0,bad:0};persist();buildPool();}
-window.resetPractice=resetPractice; window.resetTree=resetTree;
-buildPool();
+window.startFree=startFree;startFree();
+
+renderTrilha();
 </script>
 </body>
 </html>
