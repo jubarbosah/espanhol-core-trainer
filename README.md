@@ -34,8 +34,13 @@ A trilha:
 
 **Faça na ordem.** Cada lição prepara a seguinte.
 
+### 📚 Nível 2 · Tempos extras (trilha opcional)
+Logo abaixo da trilha principal, 4 lições para ir além do núcleo: **Futuro**, **Condicional**, **Imperfeito do subjuntivo** (si tuviera…) e **Pluscuamperfecto** (había hablado). Faça depois de dominar a trilha principal.
+
 ### 🔍 Consultar — material de apoio
 Sem ordem, vá quando tiver dúvida:
+- **🧠 Treino esperto** — repetição espaçada: escolhe sozinho o que você mais erra e o que ainda não viu, com estatísticas (dominados / aprendendo / frágeis / novos).
+- **✍️ Tradução PT→ES** — produção ativa: escreva a frase em espanhol, compare com a resposta-modelo e autoavalie. É o treino mais completo.
 - **🏋️ 100 exercícios** — banco de prática por tema (presente, indefinido, imperfeito, fechado×cenário, perfecto, subjuntivo, imperativo, mistos). Cada frase mostra a **explicação** depois que você responde.
 - **📖 25 verbos** — a conjugação dos 25 verbos mais usados nos tempos do app (presente, indefinido, imperfeito, subjuntivo) + particípio e imperativo.
 - **📋 Terminações** — monte qualquer verbo regular + os 6 irregulares.

@@ -132,6 +132,8 @@
   <div class="subnav">
     <button class="on" data-c="bank">🏋️ 100 por tema</button>
     <button data-c="rev">🔄 Revisão geral</button>
+    <button data-c="smart">🧠 Treino esperto</button>
+    <button data-c="trad">✍️ Tradução</button>
     <button data-c="verbos">📖 25 verbos</button>
     <button data-c="tabelas">📋 Terminações</button>
     <button data-c="arvore">🌳 Que tempo usar?</button>
@@ -154,6 +156,25 @@
       <button class="btn" onclick="startRev(0)">▶️ Revisão completa (110)</button>
       <button class="btn ghost" onclick="startRev(15)">⚡ Sessão rápida (15)</button>
       <div id="rev-host" style="margin-top:12px"></div>
+    </div>
+  </div>
+
+  <div class="csub" id="c-smart">
+    <div class="card">
+      <h3>Treino esperto (repetição espaçada)</h3>
+      <p class="legend">Escolhe sozinho o que você mais erra e o que ainda não viu. Quanto mais você usa, mais ele foca nos seus pontos fracos.</p>
+      <div id="smart-stats"></div>
+      <button class="btn" onclick="startSmart()">▶️ Treinar 15 itens</button>
+      <div id="smart-host" style="margin-top:12px"></div>
+    </div>
+  </div>
+
+  <div class="csub" id="c-trad">
+    <div class="card">
+      <h3>Tradução PT → ES (produção)</h3>
+      <p class="legend">Escreva a frase em espanhol, compare com a resposta-modelo e marque você mesmo como foi. Escrever do zero é o que mais ensina.</p>
+      <button class="btn" onclick="startTrad()">▶️ Começar (20 frases)</button>
+      <div id="trad-host" style="margin-top:12px"></div>
     </div>
   </div>
 
@@ -429,6 +450,60 @@ const LESSONS=[
  ]}
 ];
 
+/* ===== NÍVEL 2 · TEMPOS EXTRAS ===== */
+const LESSONS2=[
+{id:101,title:"Futuro simple",sub:"o que vai acontecer",
+ teach:`<h3>Futuro (hablaré = falarei)</h3>
+  <p>É o tempo mais fácil de todos: pegue o <b>infinitivo inteiro</b> e adicione a mesma terminação para -AR, -ER e -IR:</p>
+  <div class="ex-box"><span class="end">-é, -ás, -á, -emos, -éis, -án</span></div>
+  <div class="ex-box">hablar → <span class="hl">hablaré</span> · comer → comerás · vivir → vivirá</div>
+  <p>Alguns trocam a <b>raiz</b>, mas mantêm essas terminações:</p>
+  <div class="ex-box">tener→<b>tendré</b> · hacer→<b>haré</b> · poder→<b>podré</b> · decir→<b>diré</b> · poner→<b>pondré</b> · venir→<b>vendré</b> · salir→<b>saldré</b> · querer→<b>querré</b> · saber→<b>sabré</b></div>
+  <p>💡 Alternativa muito usada na fala: <b>ir a + infinitivo</b> ("voy a viajar").</p>`,
+ drills:[
+  {cue:"hablar · yo · futuro",text:"",a:["hablaré","hablare"]},
+  {cue:"comer · ellos · futuro",text:"",a:["comerán","comeran"]},
+  {cue:"tener · yo · futuro",text:"",a:["tendré","tendre"],why:"Raiz irregular do futuro: tendr-."},
+  {cue:"ir · nosotros · futuro",text:"Mañana ▢ a la playa.",a:["iremos"]}
+ ]},
+{id:102,title:"Condicional",sub:"o que aconteceria",
+ teach:`<h3>Condicional (hablaría = falaria)</h3>
+  <p>Use a <b>mesma raiz do futuro</b> + as terminações do imperfeito de -ER/-IR:</p>
+  <div class="ex-box"><span class="end">-ía, -ías, -ía, -íamos, -íais, -ían</span></div>
+  <div class="ex-box">hablar → <span class="hl">hablaría</span> · poder → podrías · tener → tendría · hacer → haría</div>
+  <p>Para que serve: <b>hipótese</b> ("yo que tú, hablaría"), <b>cortesia</b> ("me gustaría…") e <b>conselho</b>.</p>`,
+ drills:[
+  {cue:"hablar · yo · condicional",text:"",a:["hablaría","hablaria"]},
+  {cue:"poder · tú · condicional",text:"",a:["podrías","podrias"],why:"Mesma raiz irregular do futuro: podr-."},
+  {cue:"hablar · yo · condicional",text:"Yo en tu lugar ▢ con él.",a:["hablaría","hablaria"],why:"Conselho/hipótese → condicional."},
+  {cue:"gustar · condicional · cortesia",text:"Me ▢ un café, por favor.",a:["gustaría","gustaria"],why:"'Me gustaría' = pedido educado."}
+ ]},
+{id:103,title:"Imperfeito do subjuntivo",sub:"si tuviera…",
+ teach:`<h3>Imperfeito do subjuntivo (que eu falasse)</h3>
+  <p>Receita infalível: pegue o <b>ellos do passado fechado</b>, tire o <b>-ron</b> e ponha <b>-ra</b> (ou <b>-se</b>):</p>
+  <div class="ex-box">hablaron → habla<b>ra</b> · comieron → comie<b>ra</b> · tuvieron → tuvie<b>ra</b> · fueron → fue<b>ra</b></div>
+  <p>As duas formas (-ra e -se) são equivalentes: hablara = hablase.</p>
+  <p>Para que serve: depois de <b>"si"</b> de hipótese ("Si tuviera dinero…") e em desejos/pedidos no passado ("Quería que vinieras").</p>`,
+ drills:[
+  {cue:"hablar · yo · imperf. subj.",text:"",a:["hablara","hablase"]},
+  {cue:"tener · yo · imperf. subj.",text:"",a:["tuviera","tuviese"],why:"De 'tuvieron' → tuviera / tuviese."},
+  {cue:"ser · yo · imperf. subj.",text:"Si yo ▢ rico, viajaría mucho.",a:["fuera","fuese"],why:"'Si' + hipótese → imperfeito do subjuntivo."},
+  {cue:"poder · tú · imperf. subj.",text:"Ojalá ▢ venir mañana.",a:["pudieras","pudieses"]}
+ ]},
+{id:104,title:"Pluscuamperfecto",sub:"o passado do passado",
+ teach:`<h3>Pluscuamperfecto (tinha falado)</h3>
+  <p>Para algo que <b>já tinha acontecido antes</b> de outra coisa no passado.</p>
+  <p>Forma: <b>imperfeito de haber</b> (había, habías, había, habíamos, habíais, habían) + particípio:</p>
+  <div class="ex-box">"Cuando llegué, ya <span class="hl">había salido</span>." (quando cheguei, já tinha saído)</div>
+  <p>💡 É igualzinho ao português "tinha + particípio".</p>`,
+ drills:[
+  {cue:"hablar · yo · pluscuamperfecto",text:"",a:["había hablado","habia hablado"]},
+  {cue:"cenar · ellos",text:"Cuando llegué, ya ▢.",a:["habían cenado","habian cenado"],why:"Ação anterior a outra no passado."},
+  {cue:"ver · yo",text:"Nunca ▢ algo así antes.",a:["había visto","habia visto"],why:"Particípio irregular: visto."},
+  {cue:"terminar · ella",text:"Dijo que ya ▢.",a:["había terminado","habia terminado"]}
+ ]}
+];
+
 /* ===== 100 EXERCÍCIOS ===== */
 const BANK=[
 /* PRESENTE */
@@ -661,7 +736,7 @@ const REVISAO=[
 ];
 
 /* ===== HELPERS ===== */
-const NORM=s=>s.toLowerCase().trim().replace(/\s+/g," ");
+const NORM=s=>s.toLowerCase().trim().replace(/[¿?¡!.,;:"']/g,"").replace(/\s+/g," ");
 const STRIP=s=>NORM(s).normalize("NFD").replace(/[̀-ͯ]/g,"");
 function matchAns(guess,arr){
   const g=NORM(guess),gs=STRIP(guess);
@@ -670,8 +745,8 @@ function matchAns(guess,arr){
   return"no";
 }
 const SAVE="esp_passo_v1";
-let state={done:[]};
-try{const s=JSON.parse(localStorage.getItem(SAVE));if(s&&Array.isArray(s.done))state=s;}catch(e){}
+let state={done:[],done2:[]};
+try{const s=JSON.parse(localStorage.getItem(SAVE));if(s){state.done=Array.isArray(s.done)?s.done:[];state.done2=Array.isArray(s.done2)?s.done2:[];}}catch(e){}
 function save(){localStorage.setItem(SAVE,JSON.stringify(state));}
 function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
 
@@ -684,48 +759,59 @@ document.querySelectorAll("nav button").forEach(b=>b.onclick=()=>{
   if(b.dataset.v==="aprender")renderTrilha();
 });
 
-/* ===== TRILHA ===== */
-function isUnlocked(i){return i===0||state.done.includes(LESSONS[i-1].id);}
+/* ===== TRILHAS (principal + Nível 2) ===== */
+function trackData(tr){return tr===2?{arr:LESSONS2,done:state.done2}:{arr:LESSONS,done:state.done};}
+function isUnlocked(tr,i){const d=trackData(tr);return i===0||d.done.includes(d.arr[i-1].id);}
+function trilhaListHTML(tr){
+  const {arr,done}=trackData(tr);let h="";
+  arr.forEach((l,i)=>{
+    const isDone=done.includes(l.id),unlocked=isUnlocked(tr,i);
+    const cls=isDone?"done":(unlocked?"avail":"locked");
+    const icon=isDone?"✓":(unlocked?(i+1):"🔒");
+    const status=isDone?"Concluída · toque para revisar":(unlocked?"Disponível":"Conclua a anterior");
+    h+=`<div class="lesson ${cls}" data-tr="${tr}" data-i="${i}"><div class="num">${icon}</div>
+      <div><div class="t">${l.title}</div><div class="s">${l.sub} · ${status}</div></div></div>`;
+  });
+  return h;
+}
 function renderTrilha(){
   document.getElementById("licao").style.display="none";
   const host=document.getElementById("trilha");host.style.display="block";
-  const pct=Math.round(state.done.length/LESSONS.length*100);
-  let h=`<h2>Sua trilha</h2><p class="sub">${state.done.length} de ${LESSONS.length} lições concluídas.</p>
-    <div class="topbar"><div class="bar"><div style="width:${pct}%"></div></div><span class="pct">${pct}%</span></div>`;
-  LESSONS.forEach((l,i)=>{
-    const done=state.done.includes(l.id),unlocked=isUnlocked(i);
-    const cls=done?"done":(unlocked?"avail":"locked");
-    const icon=done?"✓":(unlocked?l.id:"🔒");
-    const status=done?"Concluída · toque para revisar":(unlocked?"Disponível":"Conclua a anterior");
-    h+=`<div class="lesson ${cls}" data-i="${i}"><div class="num">${icon}</div>
-      <div><div class="t">${l.title}</div><div class="s">${l.sub} · ${status}</div></div></div>`;
-  });
+  const p1=Math.round(state.done.length/LESSONS.length*100);
+  const p2=Math.round(state.done2.length/LESSONS2.length*100);
+  let h=`<h2>Trilha principal</h2><p class="sub">${state.done.length}/${LESSONS.length} lições · o núcleo do espanhol.</p>
+    <div class="topbar"><div class="bar"><div style="width:${p1}%"></div></div><span class="pct">${p1}%</span></div>`;
+  h+=trilhaListHTML(1);
+  h+=`<h2 style="margin-top:28px">Nível 2 · Tempos extras</h2><p class="sub">${state.done2.length}/${LESSONS2.length} lições · recomendado após a trilha principal.</p>
+    <div class="topbar"><div class="bar"><div style="width:${p2}%"></div></div><span class="pct">${p2}%</span></div>`;
+  h+=trilhaListHTML(2);
   host.innerHTML=h;
-  host.querySelectorAll(".lesson").forEach(el=>{const i=+el.dataset.i;if(isUnlocked(i))el.onclick=()=>openLesson(i);});
+  host.querySelectorAll(".lesson").forEach(el=>{const tr=+el.dataset.tr,i=+el.dataset.i;if(isUnlocked(tr,i))el.onclick=()=>openLesson(tr,i);});
 }
-function openLesson(i){
-  const l=LESSONS[i];window.scrollTo(0,0);
+function openLesson(tr,i){
+  const {arr,done}=trackData(tr);const l=arr[i];window.scrollTo(0,0);
   document.getElementById("trilha").style.display="none";
   const host=document.getElementById("licao");host.style.display="block";
-  host.innerHTML=`<button class="back" onclick="renderTrilha()">← Voltar à trilha</button>
-    <div class="crumb">Lição ${l.id} de ${LESSONS.length}</div>
+  host.innerHTML=`<button class="back" onclick="renderTrilha()">← Voltar às trilhas</button>
+    <div class="crumb">${tr===2?"Nível 2":"Trilha"} · ${l.title}</div>
     <div class="teach">${l.teach}</div>
     <button class="btn" id="start-drills">Começar exercícios →</button>`;
   document.getElementById("start-drills").onclick=()=>runSession(l.drills,host,()=>{
-    if(!state.done.includes(l.id)){state.done.push(l.id);save();}
-    finishLesson(host,i);
-  },true);
+    if(!done.includes(l.id)){done.push(l.id);save();}
+    finishLesson(tr,host,i);
+  });
 }
-function finishLesson(host,i){
-  const next=i+1<LESSONS.length?i+1:null;
+function finishLesson(tr,host,i){
+  const {arr}=trackData(tr);const next=i+1<arr.length?i+1:null;
   host.innerHTML=`<div class="drill done-screen"><div class="big">🎉</div>
-    <h3>Lição concluída!</h3><p class="sub">Mandou bem. ${next!==null?"Pronto para a próxima?":"Você terminou a trilha inteira!"}</p>
+    <h3>Lição concluída!</h3><p class="sub">Mandou bem. ${next!==null?"Pronto para a próxima?":"Você terminou esta trilha!"}</p>
     ${next!==null?`<button class="btn" id="go-next">Próxima lição →</button>`:""}
-    <button class="btn ghost" onclick="renderTrilha()">Voltar à trilha</button></div>`;
-  if(next!==null)document.getElementById("go-next").onclick=()=>openLesson(next);
+    <button class="btn ghost" onclick="renderTrilha()">Voltar às trilhas</button></div>`;
+  if(next!==null)document.getElementById("go-next").onclick=()=>openLesson(tr,next);
 }
 /* drill engine */
-function runSession(drills,host,onDone,shuffleNo){
+function runSession(drills,host,onDone,opts){
+  opts=opts||{};
   let i=0,answered=false;
   const card=document.createElement("div");card.className="drill";host.innerHTML="";host.appendChild(card);
   function render(){
@@ -744,6 +830,7 @@ function runSession(drills,host,onDone,shuffleNo){
       if(!inp.value.trim()){inp.focus();return;}
       answered=true;inp.disabled=true;
       const m=matchAns(inp.value,d.a);
+      if(opts.onAnswer)opts.onAnswer(d,m);
       if(m==="exact")fb.className="fb ok",fb.innerHTML=`<div class="ans">✓ Correto!</div>${d.why?`<div class="why">💡 ${d.why}</div>`:""}`;
       else if(m==="loose")fb.className="fb ok",fb.innerHTML=`<div class="ans">✓ Quase!</div><div class="why">A forma está certa, confira o acento: <b>${d.a[0]}</b>.</div>${d.why?`<div class="why">💡 ${d.why}</div>`:""}`;
       else fb.className="fb bad",fb.innerHTML=`<div class="ans">A resposta é: ${d.a[0]}</div>${d.why?`<div class="why">💡 ${d.why}</div>`:'<div class="why">Anote e siga em frente.</div>'}`;
@@ -796,6 +883,101 @@ function startRev(n){
   });
 }
 window.startRev=startRev;
+
+/* ===== TREINO ESPERTO (repetição espaçada) ===== */
+const SRS_KEY="esp_srs_v1";
+let srs={};
+try{const s=JSON.parse(localStorage.getItem(SRS_KEY));if(s&&typeof s==="object")srs=s;}catch(e){}
+function srsSave(){localStorage.setItem(SRS_KEY,JSON.stringify(srs));}
+function srsUpdate(id,res){
+  const cur=srs[id]?srs[id].box:1;
+  let box;
+  if(res==="exact")box=Math.min(5,cur+1);
+  else if(res==="loose")box=Math.max(1,cur);
+  else box=1;
+  srs[id]={box:box,seen:(srs[id]?srs[id].seen:0)+1};
+  srsSave();
+}
+function smartPool(){return [...BANK.map((d,i)=>({...d,id:"b"+i})),...REVISAO.map((d,i)=>({...d,id:"r"+i}))];}
+function renderSmartStats(){
+  const pool=smartPool();let fr=0,ap=0,dom=0,nov=0;
+  pool.forEach(it=>{const s=srs[it.id];if(!s)nov++;else if(s.box>=5)dom++;else if(s.box<=1)fr++;else ap++;});
+  const el=document.getElementById("smart-stats");if(!el)return;
+  el.innerHTML=`<div class="insight" style="margin-top:0">📊 De ${pool.length} itens: <b style="color:var(--ok)">${dom}</b> dominados · <b>${ap}</b> aprendendo · <b style="color:var(--bad)">${fr}</b> frágeis · <b>${nov}</b> novos.</div>`;
+}
+function startSmart(){
+  const pool=smartPool();
+  pool.forEach(it=>{const s=srs[it.id];it._p=s?s.box:1.5;});
+  pool.sort((a,b)=>a._p-b._p||Math.random()-0.5);
+  const list=pool.slice(0,15);
+  runSession(list,document.getElementById("smart-host"),()=>{
+    renderSmartStats();
+    document.getElementById("smart-host").innerHTML=`<div class="done-screen"><div class="big">🧠</div><h3>Rodada concluída!</h3><p class="sub">Suas estatísticas acima foram atualizadas. O treino vai focar no que ainda está frágil.</p><button class="btn" onclick="startSmart()">Mais 15 itens</button></div>`;
+  },{onAnswer:(d,res)=>srsUpdate(d.id,res)});
+}
+window.startSmart=startSmart;
+renderSmartStats();
+
+/* ===== TRADUÇÃO PT→ES ===== */
+const TRAD=[
+ {pt:"Eu sou professor.",a:["soy profesor","yo soy profesor"],why:"Profissão → ser: soy."},
+ {pt:"Ela tem dois filhos.",a:["tiene dos hijos","ella tiene dos hijos"],why:"tener: tiene."},
+ {pt:"Nós fomos ao cinema ontem.",a:["fuimos al cine ayer","ayer fuimos al cine"],why:"'Ontem' (fechado) → indefinido: fuimos."},
+ {pt:"Hoje eu fiz muita coisa.",a:["hoy he hecho muchas cosas","he hecho muchas cosas hoy"],why:"'Hoy' → pretérito perfecto: he hecho (não 'hice')."},
+ {pt:"Quando eu era criança, morava no campo.",a:["cuando era niño vivía en el campo","cuando era niña vivía en el campo","cuando era pequeño vivía en el campo"],why:"Cenário no passado → imperfeito: era / vivía."},
+ {pt:"Quero que você venha amanhã.",a:["quiero que vengas mañana"],why:"'Quiero que' → subjuntivo: vengas."},
+ {pt:"Amanhã eu vou viajar.",a:["mañana voy a viajar","mañana viajaré","voy a viajar mañana"],why:"Futuro: 'voy a viajar' ou 'viajaré'."},
+ {pt:"Eu gostaria de um café.",a:["me gustaría un café","quería un café"],why:"Pedido educado → condicional: me gustaría."},
+ {pt:"Se eu tivesse tempo, estudaria mais.",a:["si tuviera tiempo estudiaría más","si tuviese tiempo estudiaría más"],why:"'Se…ria' → imperfeito do subjuntivo + condicional: tuviera + estudiaría."},
+ {pt:"Não acho que ele saiba a resposta.",a:["no creo que sepa la respuesta","no creo que él sepa la respuesta"],why:"'No creo que' (dúvida) → subjuntivo: sepa."},
+ {pt:"Faça a tarefa agora.",a:["haz la tarea ahora"],why:"Ordem a 'tú': haz."},
+ {pt:"Não fale tão alto.",a:["no hables tan alto"],why:"Ordem negativa → subjuntivo: no hables."},
+ {pt:"Eles já tinham saído quando cheguei.",a:["ya habían salido cuando llegué","cuando llegué ya habían salido"],why:"Passado do passado → pluscuamperfecto: habían salido."},
+ {pt:"Eu me levanto às sete.",a:["me levanto a las siete"],why:"Reflexivo no presente: me levanto."},
+ {pt:"Ainda não terminei.",a:["todavía no he terminado","aún no he terminado"],why:"'Ainda não' → pretérito perfecto: he terminado."},
+ {pt:"Ela está cansada.",a:["está cansada","ella está cansada"],why:"Estado → estar: está."},
+ {pt:"Vocês podem me ajudar?",a:["podéis ayudarme","pueden ayudarme","me podéis ayudar","me pueden ayudar"],why:"vosotros: podéis / ustedes: pueden."},
+ {pt:"Espero que tudo dê certo.",a:["espero que todo salga bien","espero que todo vaya bien"],why:"'Espero que' → subjuntivo: salga / vaya."},
+ {pt:"Antes de você sair, apague a luz.",a:["antes de que salgas apaga la luz"],why:"'Antes de que' → subjuntivo: salgas + ordem: apaga."},
+ {pt:"Eu nunca tinha visto algo assim.",a:["nunca había visto algo así","yo nunca había visto algo así"],why:"Pluscuamperfecto: había visto."}
+];
+TRAD.forEach((d,i)=>d._id="t"+i);
+function startTrad(){runTrad(shuffle(TRAD),document.getElementById("trad-host"));}
+window.startTrad=startTrad;
+function runTrad(list,host){
+  let i=0;
+  function render(){
+    const d=list[i];
+    host.innerHTML=`<div class="drill">
+      <div class="count">Frase ${i+1} de ${list.length}</div>
+      <span class="cue">traduza para o espanhol</span>
+      <div class="text">${d.pt}</div>
+      <input id="t-in" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="escreva em espanhol…">
+      <button class="btn" id="t-see">Ver resposta</button>
+      <div class="fb" id="t-fb"></div>
+      <div id="t-grade"></div>
+    </div>`;
+    const inp=host.querySelector("#t-in"),fb=host.querySelector("#t-fb"),gr=host.querySelector("#t-grade"),see=host.querySelector("#t-see");
+    inp.focus();
+    see.onclick=()=>{
+      if(gr.innerHTML)return;
+      const auto=matchAns(inp.value,d.a);
+      const other=d.a.length>1?`<div class="why">Outras formas certas: ${d.a.slice(1).join(" · ")}</div>`:"";
+      const cmp=auto==="exact"?'<div class="why">✓ Igual à sua resposta.</div>':auto==="loose"?'<div class="why">Quase igual à sua (só acento/detalhe).</div>':'';
+      fb.className="fb ok";
+      fb.innerHTML=`<div class="ans">${d.a[0]}</div>${other}<div class="why">💡 ${d.why}</div>${cmp}`;
+      gr.innerHTML=`<p class="legend" style="margin:14px 0 6px">Como você foi?</p>
+        <button class="btn" style="background:var(--ok)" data-g="exact">✅ Acertei</button>
+        <button class="btn ghost" data-g="loose">🟡 Quase</button>
+        <button class="btn" style="background:var(--bad);color:#3a0d0d" data-g="no">❌ Errei</button>`;
+      gr.querySelectorAll("button").forEach(b=>b.onclick=()=>{srsUpdate(d._id,b.dataset.g);next();});
+      fb.scrollIntoView({behavior:"smooth",block:"nearest"});
+    };
+    inp.addEventListener("keydown",e=>{if(e.key==="Enter")see.click();});
+  }
+  function next(){i++;if(i<list.length){render();window.scrollTo(0,0);}else host.innerHTML=`<div class="done-screen"><div class="big">✍️</div><h3>Tradução concluída!</h3><p class="sub">Produzir frases inteiras é o treino mais completo. ¡Bien hecho!</p><button class="btn" onclick="startTrad()">Recomeçar</button></div>`;}
+  render();
+}
 
 /* ===== 25 VERBOS ===== */
 const v25sel=document.getElementById("v25-sel"),v25out=document.getElementById("v25-out");
